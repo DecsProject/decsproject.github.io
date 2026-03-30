@@ -1,0 +1,412 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-QHEW7YHGGK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-QHEW7YHGGK');
+  </script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stockholm Nightlife — Geospatial Study | DecsProject</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;}
+
+    body{
+      font-family:'DM Sans',sans-serif;
+      color:#1a1a1a;
+      background-color:#f2ede8;
+      min-height:100vh;
+      padding:2.5rem 0 6rem;
+      position:relative;
+      overflow-x:hidden;
+    }
+
+    /* grain overlay */
+    body::before{
+      content:'';position:fixed;inset:0;pointer-events:none;z-index:100;opacity:0.035;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size:200px 200px;mix-blend-mode:multiply;
+    }
+
+    @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+    @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+    @keyframes pulse{0%,100%{opacity:0.5;}50%{opacity:1;}}
+
+    /* ── Top bar ── */
+    .top-bar{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 2.5rem;
+      margin-bottom:3.5rem;
+      animation:fadeIn 0.5s ease both;
+      position:relative;z-index:2;
+    }
+    .site-name{
+      font-family:'Josefin Sans',sans-serif;
+      font-size:1.15rem;font-weight:300;
+      letter-spacing:0.12em;
+      color:#1a1a1a;text-decoration:none;
+      transition:opacity 0.15s;
+    }
+    .site-name:hover{opacity:0.6;}
+    .back-link{
+      font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.15em;
+      text-transform:uppercase;color:#888;text-decoration:none;
+      transition:color 0.15s;
+    }
+    .back-link:hover{color:#1a1a1a;}
+
+    /* ── Content column ── */
+    .col{
+      max-width:820px;margin:0 auto;padding:0 5rem;
+      position:relative;z-index:2;
+    }
+
+    /* ── Project header ── */
+    .proj-header{
+      margin-bottom:2.5rem;
+      animation:fadeUp 0.7s ease 0.1s both;
+    }
+    .proj-eyebrow{
+      font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.2em;
+      text-transform:uppercase;color:#888;
+      margin-bottom:0.9rem;
+      display:flex;align-items:center;gap:10px;
+    }
+    .wip-dot{
+      display:inline-block;width:5px;height:5px;border-radius:50%;
+      background:#BA7517;position:relative;top:-1px;
+      animation:pulse 2s ease-in-out infinite;
+    }
+
+    .proj-title{
+      font-family:'Libre Baskerville',serif;
+      font-size:clamp(1.8rem,4vw,2.6rem);
+      font-weight:700;line-height:1.1;
+      letter-spacing:-0.02em;
+      margin-bottom:1.25rem;
+    }
+    .proj-title em{font-style:italic;font-weight:400;}
+
+    .proj-overview{
+      font-size:14px;color:#555;line-height:1.9;
+      font-weight:300;max-width:580px;
+      margin-bottom:1.5rem;
+    }
+
+    .proj-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.5rem;}
+    .proj-tag{
+      font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.1em;
+      text-transform:uppercase;padding:3px 8px;
+      border:0.5px solid rgba(0,0,0,0.2);border-radius:2px;color:#555;
+    }
+
+    .github-link{
+      display:inline-flex;align-items:center;gap:6px;
+      font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;
+      text-transform:uppercase;text-decoration:none;
+      color:#888;transition:color 0.15s;
+      padding-bottom:0.15rem;
+      border-bottom:0.5px solid rgba(0,0,0,0.15);
+    }
+    .github-link:hover{color:#1a1a1a;border-bottom-color:rgba(0,0,0,0.4);}
+
+    /* ── Map placeholder ── */
+    .map-wrap{
+      margin:3rem 0;
+      animation:fadeUp 0.7s ease 0.25s both;
+      position:relative;z-index:2;
+    }
+    .map-label{
+      font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.22em;
+      text-transform:uppercase;color:#aaa;
+      margin-bottom:0.75rem;
+      display:flex;align-items:center;gap:8px;
+    }
+    .map-label-pip{
+      display:inline-block;width:4px;height:4px;border-radius:50%;
+      background:#BA7517;
+      animation:pulse 2s ease-in-out infinite;
+    }
+
+    .map-placeholder{
+      width:100%;
+      aspect-ratio:16/7;
+      border-radius:14px;
+      background:#e0d9d2;
+      border:1.5px solid rgba(0,0,0,0.07);
+      display:flex;flex-direction:column;
+      align-items:center;justify-content:center;
+      gap:1rem;
+      position:relative;
+      overflow:hidden;
+    }
+
+    /* Subtle city grid texture */
+    .map-placeholder::before{
+      content:'';
+      position:absolute;inset:0;
+      background-image:
+        linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px);
+      background-size:32px 32px;
+      border-radius:14px;
+    }
+
+    /* Faint dot cluster — suggests heatmap */
+    .map-placeholder::after{
+      content:'';
+      position:absolute;
+      width:180px;height:120px;
+      top:50%;left:50%;
+      transform:translate(-50%,-50%);
+      background:radial-gradient(ellipse at 40% 50%, rgba(74,90,122,0.18) 0%, transparent 70%),
+                 radial-gradient(ellipse at 70% 35%, rgba(74,90,122,0.12) 0%, transparent 55%),
+                 radial-gradient(ellipse at 55% 70%, rgba(74,90,122,0.09) 0%, transparent 50%);
+      pointer-events:none;
+    }
+
+    .map-coming{
+      position:relative;z-index:1;
+      text-align:center;
+    }
+    .map-coming-title{
+      font-family:'Libre Baskerville',serif;
+      font-size:1rem;font-weight:700;
+      color:#1a1a1a;opacity:0.4;
+      margin-bottom:0.35rem;
+    }
+    .map-coming-sub{
+      font-family:'DM Mono',monospace;font-size:9px;
+      letter-spacing:0.18em;text-transform:uppercase;
+      color:#888;opacity:0.7;
+    }
+
+    /* ── Divider ── */
+    .section-divider{
+      border:none;border-top:1px solid rgba(0,0,0,0.1);
+      margin:0 0 2.5rem;
+      animation:fadeIn 0.5s ease 0.35s both;
+    }
+
+    /* ── Scope section ── */
+    .scope-wrap{
+      animation:fadeUp 0.65s ease 0.4s both;
+    }
+    .scope-label{
+      font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.22em;
+      text-transform:uppercase;color:#aaa;
+      margin-bottom:1.25rem;
+    }
+
+    .scope-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr 1fr;
+      gap:1px;
+      background:rgba(0,0,0,0.08);
+      border-radius:10px;
+      overflow:hidden;
+      margin-bottom:2.5rem;
+    }
+    .scope-cell{
+      background:#f2ede8;
+      padding:1.25rem 1.4rem;
+    }
+    .scope-cell-period{
+      font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.14em;
+      text-transform:uppercase;color:#4a5a7a;
+      margin-bottom:0.5rem;
+    }
+    .scope-cell-title{
+      font-family:'Libre Baskerville',serif;
+      font-size:0.9rem;font-weight:700;
+      margin-bottom:0.5rem;color:#1a1a1a;
+    }
+    .scope-cell-desc{
+      font-size:11.5px;color:#888;font-weight:300;line-height:1.6;
+    }
+
+    /* ── Layer list ── */
+    .layers-label{
+      font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.22em;
+      text-transform:uppercase;color:#aaa;
+      margin-bottom:0.5rem;
+    }
+    .layer-list{display:flex;flex-direction:column;}
+    .layer-row{
+      display:grid;
+      grid-template-columns:28px 1fr auto;
+      gap:0 1.25rem;
+      align-items:center;
+      padding:0.95rem 0;
+      border-bottom:0.5px solid rgba(0,0,0,0.08);
+      animation:fadeUp 0.5s ease both;
+    }
+    .layer-row:first-child{border-top:0.5px solid rgba(0,0,0,0.08);}
+
+    .layer-index{
+      font-family:'DM Mono',monospace;font-size:10px;color:#ccc;
+    }
+    .layer-main{}
+    .layer-title{
+      font-family:'Libre Baskerville',serif;font-size:0.95rem;
+      font-weight:700;line-height:1.2;margin-bottom:0.15rem;color:#1a1a1a;
+    }
+    .layer-desc{
+      font-size:12px;color:#999;font-weight:300;line-height:1.5;
+    }
+    .layer-status{
+      font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.1em;
+      text-transform:uppercase;
+      white-space:nowrap;
+    }
+    .ls-planned{color:#ccc;}
+
+    /* ── Mobile ── */
+    @media(max-width:600px){
+      body{padding:1.5rem 0 4rem;}
+      .top-bar{padding:0 1.25rem;margin-bottom:2.5rem;}
+      .col{padding:0 1.25rem;}
+      .proj-title{font-size:1.6rem;}
+
+      .map-placeholder{aspect-ratio:4/3;}
+
+      .scope-grid{
+        grid-template-columns:1fr;
+      }
+
+      .layer-row{
+        grid-template-columns:24px 1fr;
+        gap:0 0.75rem;
+      }
+      .layer-status{display:none;}
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-bar">
+    <a class="site-name" href="index.html">DecsProject</a>
+    <a class="back-link" href="archive.html">← All projects</a>
+  </div>
+
+  <div class="col">
+
+    <!-- ── Header ── -->
+    <div class="proj-header">
+      <div class="proj-eyebrow">
+        <span class="wip-dot"></span>
+        In progress · 2025
+      </div>
+      <h1 class="proj-title">Stockholm Nightlife —<br><em>Geospatial Study</em></h1>
+      <p class="proj-overview">
+        Forty years of Stockholm's entertainment landscape — mapped, layered, and interrogated. Tracking how bars, clubs, cinemas, and cultural venues have appeared, shifted, and disappeared across the city from 1985 to today. The centrepiece is an interactive map that lets you move through time and watch the city's nightlife geography evolve.
+      </p>
+      <div class="proj-tags">
+        <span class="proj-tag">GeoPandas</span>
+        <span class="proj-tag">Plotly</span>
+        <span class="proj-tag">DuckDB</span>
+        <span class="proj-tag">OSM</span>
+        <span class="proj-tag">Geospatial</span>
+      </div>
+      <a class="github-link" href="YOUR_GITHUB_URL" target="_blank">GitHub →</a>
+    </div>
+
+  </div>
+
+  <!-- ── Map — full width within column ── -->
+  <div class="col">
+    <div class="map-wrap">
+      <div class="map-label">
+        <span class="map-label-pip"></span>
+        Interactive map — in development
+      </div>
+      <div class="map-placeholder">
+        <div class="map-coming">
+          <div class="map-coming-title">Stockholm 1985 – 2025</div>
+          <div class="map-coming-sub">Map coming soon</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col">
+
+    <hr class="section-divider">
+
+    <!-- ── Three eras ── -->
+    <div class="scope-wrap">
+      <div class="scope-label">Three eras</div>
+      <div class="scope-grid">
+        <div class="scope-cell">
+          <div class="scope-cell-period">1985 – 1999</div>
+          <div class="scope-cell-title">Analog era</div>
+          <div class="scope-cell-desc">Dance restaurants, rock clubs, city cinemas, and arcade halls — before the internet changed everything.</div>
+        </div>
+        <div class="scope-cell">
+          <div class="scope-cell-period">2000 – 2009</div>
+          <div class="scope-cell-title">Digitalisation</div>
+          <div class="scope-cell-desc">Internet cafés, the Stureplan era, multiplex cinemas, and the first wave of large-format nightclubs.</div>
+        </div>
+        <div class="scope-cell">
+          <div class="scope-cell-period">2010 – 2025</div>
+          <div class="scope-cell-title">Mobile era</div>
+          <div class="scope-cell-desc">Craft beer bars, escape rooms, food courts, e-sport arenas, and coworking cafés reshape the map.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Data layers ── -->
+    <div class="layers-label">Data layers</div>
+    <div class="layer-list">
+
+      <div class="layer-row" style="animation-delay:0.42s">
+        <div class="layer-index">01</div>
+        <div class="layer-main">
+          <div class="layer-title">Base layer</div>
+          <div class="layer-desc">Stable categories across all 40 years — restaurants, bars, clubs, cinemas, theatres, concert venues, arenas, museums.</div>
+        </div>
+        <div class="layer-status ls-planned">Planned</div>
+      </div>
+
+      <div class="layer-row" style="animation-delay:0.50s">
+        <div class="layer-index">02</div>
+        <div class="layer-main">
+          <div class="layer-title">Trend categories</div>
+          <div class="layer-desc">Era-specific venues that appear and disappear — arcade halls, internet cafés, escape rooms, craft beer bars, e-sport arenas.</div>
+        </div>
+        <div class="layer-status ls-planned">Planned</div>
+      </div>
+
+      <div class="layer-row" style="animation-delay:0.58s">
+        <div class="layer-index">03</div>
+        <div class="layer-main">
+          <div class="layer-title">Heatmaps & clusters</div>
+          <div class="layer-desc">Density hotspots per decade, geographic shifts across neighbourhoods, and emerging areas by era.</div>
+        </div>
+        <div class="layer-status ls-planned">Planned</div>
+      </div>
+
+      <div class="layer-row" style="animation-delay:0.66s">
+        <div class="layer-index">04</div>
+        <div class="layer-main">
+          <div class="layer-title">Era narratives</div>
+          <div class="layer-desc">Written analysis for each time period — what the data shows about how young adults spent their nights in Stockholm.</div>
+        </div>
+        <div class="layer-status ls-planned">Planned</div>
+      </div>
+
+    </div>
+
+  </div>
+
+</body>
+</html>
