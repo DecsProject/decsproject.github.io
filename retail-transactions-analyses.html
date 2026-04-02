@@ -31,7 +31,6 @@
       overflow-x:hidden;
     }
 
-    /* grain overlay — identical to other pages */
     body::before{
       content:'';position:fixed;inset:0;pointer-events:none;z-index:100;opacity:0.035;
       background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
@@ -41,7 +40,7 @@
     @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
     @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
 
-    /* ── Top bar ── */
+    
     .top-bar{
       display:flex;align-items:center;justify-content:space-between;
       padding:0 2.5rem;
@@ -63,13 +62,11 @@
     }
     .back-link:hover{color:#1a1a1a;}
 
-    /* ── Content column ── */
     .col{
       max-width:820px;margin:0 auto;padding:0 5rem;
       position:relative;z-index:2;
     }
 
-    /* ── Project header ── */
     .proj-header{
       margin-bottom:2.5rem;
       animation:fadeUp 0.7s ease 0.1s both;
@@ -102,7 +99,6 @@
       margin-bottom:1.5rem;
     }
 
-    /* Tags row */
     .proj-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.5rem;}
     .proj-tag{
       font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.1em;
@@ -110,7 +106,6 @@
       border:0.5px solid rgba(0,0,0,0.2);border-radius:2px;color:#555;
     }
 
-    /* GitHub link */
     .github-link{
       display:inline-flex;align-items:center;gap:6px;
       font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;
@@ -121,14 +116,12 @@
     }
     .github-link:hover{color:#1a1a1a;border-bottom-color:rgba(0,0,0,0.4);}
 
-    /* ── Divider ── */
     .section-divider{
       border:none;border-top:1px solid rgba(0,0,0,0.1);
       margin:2.5rem 0;
       animation:fadeIn 0.5s ease 0.3s both;
     }
 
-    /* ── Analyses section ── */
     .analyses-label{
       font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.22em;
       text-transform:uppercase;color:#aaa;
@@ -136,7 +129,6 @@
       animation:fadeIn 0.5s ease 0.35s both;
     }
 
-    /* ── Analysis rows ── */
     .analysis-list{display:flex;flex-direction:column;}
 
     .analysis-row{
@@ -175,7 +167,6 @@
     }
     .analysis-row:hover .analysis-open{color:#1a1a1a;}
 
-    /* ── Mobile ── */
     @media(max-width:600px){
       body{padding:1.5rem 0 4rem;}
       .top-bar{padding:0 1.25rem;margin-bottom:2.5rem;}
@@ -203,7 +194,6 @@
 
   <div class="col">
 
-    <!-- ── Project header ── -->
     <div class="proj-header">
       <div class="proj-eyebrow">
         <span class="proj-status status-live"></span>
@@ -227,7 +217,6 @@
 
     <hr class="section-divider">
 
-    <!-- ── Analyses ── -->
     <div class="analyses-label">Analyses</div>
     <div class="analysis-list">
 
@@ -278,7 +267,6 @@
 
       
 
-      <!-- Add further analyses below — copy any row above -->
 
     </div>
 
