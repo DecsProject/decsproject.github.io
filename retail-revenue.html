@@ -286,7 +286,7 @@
 
       <p class="analysis-overview">
         I denna korta analys ges en överblick av de intäkter som genererats under datasettets period. Datan sträcker sig mellan tidsperioden 2010-12-01 och 2011-12-09.<br>
-        Fokus ligger på intäktsutveckling, månads och veckovisa trender.<br>
+        Fokus ligger på intäktsutveckling, månads och veckovisa trender.<br><br>
 
         Notering: Datasettet begränsar möjligheterna för djupare analys kopplat till säsongsvariation. 
         
@@ -338,18 +338,45 @@
        </p>
       
       <div class="chart-wrap">
-      <div class="chart-label">Intäkt per månad</div>
-      <iframe class="chart-embed" src="HTML/monthly_revenue.html"></iframe>
+        <div class="chart-label">Intäkt per månad</div>
+        <iframe class="chart-embed" src="HTML/monthly_revenue.html"></iframe>
       </div>
       
-      <h2 class="section-heading">Veckovis intäkt</h2>
+      <h2 class="section-heading">Veckovisa intäkter</h2>
       <p class="body-text">
-        
+        En av de tydliga begränsningarna med datasettet är avsaknaden av jämförelse YoY. Men på veckovis data så har vi
+        faktiskt möjligheten att jämföra den överlappande period i datasettets start och slut.<br>
+        Mellan de två godtyckligt jämförbara perioderna, 2010-12-01 till 2010-12-13 (£508 068) och 2011-11-28 till 2011-12-09 (£832 876), har
+        försäljningen ökat med 64% på årsbasis, vilket stärker bilden av ett starkt 2011.<br>
+        Trots den stabila underliggande tillväxten går det att urskilja viss betydande fluktuation i intäkter vecka till vecka. Enskilda
+        veckor kan avvika med 30-40% från närliggande veckor. Denna fluktuation är främst påtaglig i början av Q1 och under Q4, däremellan är det mer stabilt.
       </p>
       
       <div class="chart-wrap">
-      <div class="chart-label">Intäkt per vecka</div>
-      <iframe class="chart-embed" src="HTML/weekly_revenue.html"></iframe>
+        <div class="chart-label">Intäkt per vecka</div>
+        <iframe class="chart-embed" src="HTML/weekly_revenue.html"></iframe>
+      </div>
+      
+      <h2 class="section-heading">Veckovis tillväxt</h2>
+      <p class="body-text">
+      Den sammansatta veckovisa tillväxten (CAGR) under datasettets period uppgår till 1,95% per vecka. Detta motsvarar
+      närmare en fördubbling av veckointäkterna från periodens start till slut. Tillsammans med de 64% i tillväxt som 
+      jämförelsen mellan de två perioderna i 2010 och 2011 hintade om tyder detta på att 2011 var ett starkt år.
+      </p>
+
+      <div class="chart-wrap">
+        <div class="chart-label">Veckovis intäktstillväxt (WoW)</div>
+        <iframe class="chart-embed" src="HTML/wow_revenue_growth.html"></iframe>
+      </div>
+
+      <h2 class="section-heading">Orders per månad</h2>
+      <p class="body-text">
+        
+      </p>
+
+      <div class="chart-wrap">
+        <div class="chart-label">Antal orders per månad</div>
+        <iframe class="chart-embed" src="HTML/monthly_orders.html"></iframe>
       </div>
 
     </div>
