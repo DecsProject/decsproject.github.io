@@ -296,7 +296,7 @@
         <div class="findings-label">Insikter</div>
         <div class="findings-list">
           <div class="finding">Januari ordervärde överraskar —  Intäkt per order 19% över periodsgenomsnittet (635 vs 533) drivet av få ovanligt stora orders.</div>
-          <div class="finding">Stark försäljningstillväxt på veckobasis — Genomsnittlig tillväxt på 1,95% per vecka.</div>
+          <div class="finding">Stark försäljningstillväxt på veckobasis — Genomsnittlig intäktstillväxt på 1,95% per vecka.</div>
           <div class="finding">Säsongseffekt levererar — Kraftig ökning av antal orders i fjärde kvartalet.</div>
         </div>
       </div>
@@ -315,99 +315,44 @@
 
     <hr class="section-divider">
 
-    <!-- ══════════════════════════════════════
-         BODY — copy and arrange blocks below.
-         All blocks are independent — use as
-         many of each as you need, in any order.
-    ══════════════════════════════════════ -->
+
     <div class="analysis-body">
 
-      <!-- SECTION HEADING -->
-      <h2 class="section-heading">Section Title</h2>
+      <h2 class="section-heading">Totala intäkter</h2>
+       <p class="body-text">
+         Totala intäkter under datasettets period uppgår till £ 10 642 111.
+         Datan sträcker sig mellan 2010-12-01 och 2011-12-09, vilket innebär att intäkter från
+         2010 (£775 286) endast representeras av december månads data medans 2011 (£9 480 687) täcker nästan hela året.
+         En djupare säsongsanalys är därav inte möjlig. Fokus ligger istället på intäktsutveckling, månads 
+         och veckovisa trender.
+       </p>
 
-      <!-- BODY TEXT -->
-      <p class="body-text">
-        Narrative text for this section. Explain what the data shows, what methodology you used, or what the chart below reveals. Keep it concise — one to three paragraphs per section works well.
-      </p>
-
-      <!-- CHART EMBED
-           Option A: Plotly HTML file in an iframe
-           Option B: Replace iframe with a <div id="myChart"> and load Plotly JS inline -->
+      <h2 class="section-heading">Månadsvisa intäkter</h2>
+       <p class="body-text">
+        Eftersom att datan sträcker sig över en relativt kort och ojämn tidsperiod så är en direkt YoY-jämförelse missvisande.
+        Lämpligast blir då att direkt zooma in och titta på skillnader över tid på månads och veckovis basis.<br>
+        Det är känt att olika branscher upplever olika säsongsmönster sett till när respektive högsäsong infaller. Inom retail
+        tenderar aktiviteten att öka markant runt november och december inför högtider. Detta speglas tydligt i försäljningen som under de tre
+        första kvartalen trendar svagt uppåt för att sedan accelerera in i fjärde kvartalet. November är datasettets klart starkaste månad med en intäktsökning på 30%
+        mot föregående månad.
+       </p>
+      
       <div class="chart-wrap">
-        <div class="chart-label">Chart title or description</div>
-        <iframe class="chart-embed" src="YOUR_PLOTLY_CHART.html"></iframe>
+      <div class="chart-label">Intäkt per månad</div>
+      <iframe class="chart-embed" src="HTML/monthly_revenue.html"></iframe>
       </div>
-
-      <!-- BODY TEXT after chart -->
+      
+      <h2 class="section-heading">Veckovis intäkt</h2>
       <p class="body-text">
-        Follow-up text interpreting what the chart shows.
+        
       </p>
-
-      <!-- CODE BLOCK (collapsed by default, click header to expand) -->
-      <div class="code-block" onclick="this.classList.toggle('open')">
-        <div class="code-toggle">
-          <span class="code-toggle-label">Python · Data cleaning</span>
-          <span class="code-toggle-icon">▾</span>
-        </div>
-        <div class="code-body"><div class="code-body-inner">
-<pre>
-import pandas as pd
-
-df = pd.read_csv('data.csv')
-df.dropna(subset=['revenue'], inplace=True)
-df['date'] = pd.to_datetime(df['date'])
-df['month'] = df['date'].dt.to_period('M')
-</pre>
-        </div></div>
+      
+      <div class="chart-wrap">
+      <div class="chart-label">Intäkt per vecka</div>
+      <iframe class="chart-embed" src="HTML/weekly_revenue.html"></iframe>
       </div>
-
-      <!-- SECTION HEADING -->
-      <h2 class="section-heading">Another Section</h2>
-
-      <p class="body-text">
-        Introductory text for this section.
-      </p>
-
-      <!-- DATA TABLE -->
-      <div class="table-wrap">
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>Column One</th>
-              <th>Column Two</th>
-              <th>Column Three</th>
-              <th>Column Four</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Row value</td>
-              <td>Row value</td>
-              <td>Row value</td>
-              <td>Row value</td>
-            </tr>
-            <tr>
-              <td>Row value</td>
-              <td>Row value</td>
-              <td>Row value</td>
-              <td>Row value</td>
-            </tr>
-            <tr>
-              <td>Row value</td>
-              <td>Row value</td>
-              <td>Row value</td>
-              <td>Row value</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Add more sections by repeating any blocks above -->
 
     </div>
-    <!-- end .analysis-body -->
-
-  </div>
 
 </body>
 </html>
