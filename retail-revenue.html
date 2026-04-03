@@ -289,7 +289,7 @@
 
       <p class="analysis-overview">
         I denna korta analys ges en överblick av de intäkter som genererats under datasettets period. 
-        Datan sträcker sig mellan tidsperioden <span class="nobr">2010-12-01</span> och <span class="nobr">2011-12-09.</span>
+        Datan sträcker sig mellan perioden <span class="nobr">2010-12-01</span> och <span class="nobr">2011-12-09.</span>
         Fokus ligger på intäktsutveckling, månads och veckovisa trender.<br><br>
 
         Notering: Datasettet begränsar möjligheterna för djupare analys kopplat till säsongsvariation. 
@@ -299,9 +299,9 @@
       <div class="findings-block">
         <div class="findings-label">Insikter</div>
         <div class="findings-list">
-          <div class="finding">Januari ordervärde överraskar —  Intäkt per order 19% över periodsgenomsnittet <span class="nobr">(635 vs 533)</span> drivet av få ovanligt stora orders.</div>
+          <div class="finding">Januari sticker ut —  Ordervärde 19% över periodsgenomsnittet <span class="nobr">(635 vs 533)</span> drivet av få ovanligt stora orders.</div>
           <div class="finding">Stark försäljningstillväxt på veckobasis — Genomsnittlig intäktstillväxt på 1,95% per vecka.</div>
-          <div class="finding">Säsongseffekt levererar — Kraftig ökning av antal orders i fjärde kvartalet.</div>
+          <div class="finding">Säsongseffekt levererar — Kraftig ökning av antal orders i fjärde kvartalet bidrar till starkt år.</div>
         </div>
       </div>
 
@@ -326,7 +326,7 @@
        <p class="body-text">
          Totala intäkter under datasettets period uppgår till <span class="nobr">£ 10 642 111</span>.
          Datan sträcker sig mellan <span class="nobr">2010-12-01</span> och <span class="nobr">2011-12-09</span>, vilket innebär att intäkter från
-         <span class="nobr">2010 (£775 286)</span> endast representeras av december månads data medans <span class="nobr">2011 (£9 480 687)</span> täcker nästan hela året.
+         <span class="nobr">2010 (£775 286)</span> endast representeras av december månads data medan <span class="nobr">2011 (£9 480 687)</span> täcker nästan hela året.
          En djupare säsongsanalys är därav inte möjlig. Fokus ligger istället på intäktsutveckling, månads 
          och veckovisa trender.
        </p>
@@ -375,13 +375,43 @@
 
       <h2 class="section-heading">Orders per månad</h2>
       <p class="body-text">
-        
+        Orderläggningen följer i stort sett samma mönster som intäkterna under året, vilket tyder på att tillväxten främst 
+        drivits av fler köp snarare än högre ordervärden. De marginella avvikelserna mellan 
+        orders och intäkter som vi kan se indikerar att ordervärde tidvis fluktuerar. 
       </p>
 
       <div class="chart-wrap">
         <div class="chart-label">Antal orders per månad</div>
         <iframe class="chart-embed" src="HTML/monthly_orders.html"></iframe>
       </div>
+
+      <h2 class="section-heading">Intäkt per order</h2>
+      Det genomsnittliga ordervärdet över hela datasettet är £533. De allra flesta månader avviker inte särskilt mycket ifrån detta med undantag av
+      både januari och december 2011. Då endast 9 dagar av data från december 2011 finns så är januari 2011 av större intresse. 
+      Januaris genomsnittliga ordervärde uppgick till £635, vilket är 19% över periodens genomsnitt. Trots en av de svagare
+      månaderna sett till antalet orders (1216) så var januari en stark månad, främst drivet av de högre ordervärdena. 
+      Denna ökning av ordervärden i januari speglar ett möjligt skifte i kundbeteende efter nyår. Kunder kommer tillbaka från ledigheter, 
+      lager ska fyllas på, nya produkter ska testas. 
+      <p class="body-text">
+        
+      </p>
+
+      <div class="chart-wrap">
+        <div class="chart-label">Genomsnittligt ordervärde per månad</div>
+        <iframe class="chart-embed" src="HTML/monthly_revenue_order.html"></iframe>
+      </div>
+
+      <h2 class="section-heading">Sammanfattning</h2>
+      * Intäkter visar tydlig trend uppåt under 2011.<br>
+      * Tillväxt är främst driven av fler orders.<br>
+      * Intäkter per order fortsätter vara relativt stabil med undantag för januari.<br>
+      * Stark säsongseffekt som peakar i november.<br>
+      * Viss kortsiktig fluktuation i intäkter på veckobasis.<br>
+      <p class="body-text">
+        
+      </p>
+
+      
 
     </div>
 
