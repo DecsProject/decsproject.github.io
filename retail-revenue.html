@@ -47,6 +47,12 @@
       animation:fadeIn 0.5s ease both;
       position:relative;z-index:2;
     }
+    .page-wrap {
+      max-width: 1600px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 0 20px;
+    }
     .site-name{
       font-family:'Josefin Sans',sans-serif;
       font-size:1.15rem;font-weight:300;
@@ -270,6 +276,8 @@
 </head>
 <body>
 
+  <div class="page-wrap">
+
   <div class="top-bar">
     <a class="site-name" href="index.html">DecsProject</a>
     <a class="back-link" href="index.html" onclick="history.back(); return false;">← Back</a>
@@ -416,6 +424,7 @@
       </p>
 
     </div>
+  </div>
 
 </body>
 </html>
