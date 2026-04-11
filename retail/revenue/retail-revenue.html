@@ -1,1 +1,431 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <!-- Google tag (gtag.js) -->
+  <!--
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-QHEW7YHGGK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-QHEW7YHGGK');
+  </script>
+  -->  
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Revenue Overview | DecsProject</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;}
+
+    body{
+      font-family:'DM Sans',sans-serif;
+      color:#1a1a1a;
+      background-color:#f2ede8;
+      min-height:100vh;
+      padding:2.5rem 0 8rem;
+      position:relative;
+      overflow-x:hidden;
+    }
+
+    body::before{
+      content:'';position:fixed;inset:0;pointer-events:none;z-index:100;opacity:0.035;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size:200px 200px;mix-blend-mode:multiply;
+    }
+
+    @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+    @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+
+    .top-bar{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 2.5rem;
+      margin-bottom:3.5rem;
+      animation:fadeIn 0.5s ease both;
+      position:relative;z-index:2;
+    }
+    .page-wrap {
+      max-width: 1600px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 0 20px;
+    }
+    .site-name{
+      font-family:'Josefin Sans',sans-serif;
+      font-size:1.15rem;font-weight:300;
+      letter-spacing:0.12em;
+      color:#1a1a1a;text-decoration:none;
+      transition:opacity 0.15s;
+    }
+    .site-name:hover{opacity:0.6;}
+    .back-link{
+      font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.15em;
+      text-transform:uppercase;color:#888;text-decoration:none;
+      transition:color 0.15s;
+    }
+    .back-link:hover{color:#1a1a1a;}
+
+    .col{
+      max-width:740px;margin:0 auto;padding:0 5rem;
+      position:relative;z-index:2;
+    }
+
+    .analysis-header{
+      margin-bottom:2.75rem;
+      animation:fadeUp 0.7s ease 0.1s both;
+    }
+    .analysis-eyebrow{
+      font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.2em;
+      text-transform:uppercase;color:#888;
+      margin-bottom:0.9rem;
+      display:flex;align-items:center;gap:10px;
+    }
+    .status-dot{
+      display:inline-block;width:5px;height:5px;border-radius:50%;
+      position:relative;top:-1px;
+    }
+    .status-live{background:#1D9E75;}
+    .status-wip{background:#BA7517;}
+
+    .analysis-title{
+      font-family:'Libre Baskerville',serif;
+      font-size:clamp(1.8rem,4vw,2.4rem);
+      font-weight:700;line-height:1.1;
+      letter-spacing:-0.02em;
+      margin-bottom:1.1rem;
+    }
+    .analysis-title em{font-style:italic;font-weight:400;}
+
+    .analysis-overview{
+      font-size:14px;color:#555;line-height:1.9;
+      font-weight:300;
+      margin-bottom:1.75rem;
+    }
+
+    .findings-block{
+      background:rgba(255,255,255,0.6);
+      border:0.5px solid rgba(0,0,0,0.1);
+      border-radius:10px;
+      padding:1.25rem 1.5rem;
+      margin-bottom:1.75rem;
+    }
+    .findings-label{
+      font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.2em;
+      text-transform:uppercase;color:#aaa;
+      margin-bottom:0.9rem;
+    }
+    .findings-list{
+      display:flex;flex-direction:column;gap:0.6rem;
+    }
+    .finding{
+      display:flex;align-items:baseline;gap:0.65rem;
+      font-size:13px;color:#444;line-height:1.6;font-weight:300;
+    }
+    .finding::before{
+      content:'';
+      display:inline-block;
+      width:4px;height:4px;border-radius:50%;
+      background:#1a1a1a;opacity:0.3;
+      flex-shrink:0;position:relative;top:-2px;
+    }
+
+    .meta-row{
+      display:flex;align-items:center;justify-content:space-between;
+      flex-wrap:wrap;gap:0.75rem;
+    }
+    .analysis-tags{display:flex;gap:6px;flex-wrap:wrap;}
+    .analysis-tag{
+      font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.1em;
+      text-transform:uppercase;padding:3px 8px;
+      border:0.5px solid rgba(0,0,0,0.2);border-radius:2px;color:#555;
+    }
+    .github-link{
+      display:inline-flex;align-items:center;gap:6px;
+      font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;
+      text-transform:uppercase;text-decoration:none;
+      color:#888;transition:color 0.15s;
+      padding-bottom:0.15rem;
+      border-bottom:0.5px solid rgba(0,0,0,0.15);
+      white-space:nowrap;
+    }
+    .github-link:hover{color:#1a1a1a;border-bottom-color:rgba(0,0,0,0.4);}
+
+    .section-divider{
+      border:none;border-top:1px solid rgba(0,0,0,0.1);
+      margin:2.75rem 0;
+    }
+
+    .section-heading{
+      font-family:'Libre Baskerville',serif;
+      font-size:1.2rem;font-weight:700;
+      letter-spacing:-0.01em;
+      margin:2.5rem 0 0.75rem;
+      color:#1a1a1a;
+    }
+    .section-heading:first-child{margin-top:0;}
+
+    .body-text{
+      font-size:14px;color:#444;line-height:1.9;
+      font-weight:300;
+      margin-bottom:1.25rem;
+    }
+
+    .chart-wrap{
+      margin:1.75rem 0;
+      border-radius:10px;
+      overflow:hidden;
+      border:0.5px solid rgba(0,0,0,0.08);
+      background:#fff;
+    }
+    .chart-label{
+      font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.12em;
+      text-transform:uppercase;color:#888;
+      padding:0.85rem 1rem 0.5rem;
+    }
+    .chart-embed{
+      width:100%;
+      height:400px;
+      border:none;
+      display:block;
+    }
+
+
+    .table-wrap{
+      margin:1.75rem 0;
+      overflow-x:auto;
+      border-radius:10px;
+      border:0.5px solid rgba(0,0,0,0.08);
+    }
+    .data-table{
+      width:100%;border-collapse:collapse;
+      font-size:12.5px;
+      background:#fff;
+    }
+    .data-table thead tr{
+      border-bottom:1px solid rgba(0,0,0,0.1);
+    }
+    .data-table th{
+      font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.12em;
+      text-transform:uppercase;color:#888;
+      padding:0.75rem 1rem;
+      text-align:left;font-weight:400;
+    }
+    .data-table td{
+      padding:0.65rem 1rem;
+      color:#444;font-weight:300;
+      border-bottom:0.5px solid rgba(0,0,0,0.06);
+    }
+    .data-table tbody tr:last-child td{border-bottom:none;}
+    .data-table tbody tr:hover td{background:rgba(0,0,0,0.015);}
+
+    .code-block{
+      margin:1.75rem 0;
+      border-radius:10px;
+      overflow:hidden;
+      border:0.5px solid rgba(0,0,0,0.1);
+    }
+    .code-toggle{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0.75rem 1rem;
+      background:#1a1a1a;
+      cursor:pointer;
+      user-select:none;
+    }
+    .code-toggle-label{
+      font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.15em;
+      text-transform:uppercase;color:rgba(255,255,255,0.5);
+    }
+    .code-toggle-icon{
+      font-family:'DM Mono',monospace;font-size:10px;
+      color:rgba(255,255,255,0.35);
+      transition:transform 0.25s ease;
+    }
+    .code-block.open .code-toggle-icon{transform:rotate(180deg);}
+    .code-body{
+      display:grid;grid-template-rows:0fr;
+      transition:grid-template-rows 0.35s cubic-bezier(0.4,0,0.2,1);
+      background:#242424;
+    }
+    .code-block.open .code-body{grid-template-rows:1fr;}
+    .code-body-inner{overflow:hidden;}
+    pre{
+      padding:1.25rem 1rem;
+      font-family:'DM Mono',monospace;font-size:12px;
+      line-height:1.7;color:#cdd5e0;
+      overflow-x:auto;
+      white-space:pre;
+    }
+
+    @media(max-width:600px){
+      body{padding:1.5rem 0 5rem;}
+      .top-bar{padding:0 1.25rem;margin-bottom:2.5rem;}
+      .col{padding:0 1.25rem;}
+      .analysis-title{font-size:1.6rem;}
+      .findings-block{padding:1rem 1.1rem;}
+      .meta-row{flex-direction:column;align-items:flex-start;}
+      .chart-embed{height:280px;}
+      .data-table th,.data-table td{padding:0.6rem 0.75rem;}
+    }
+
+    .nobr { white-space: nowrap;}
+    
+  </style>
+</head>
+<body>
+
+  <div class="page-wrap">
+
+  <div class="top-bar">
+    <a class="site-name" href="index.html">DecsProject</a>
+    <a class="back-link" href="index.html" onclick="history.back(); return false;">← Back</a>
+  </div>
+
+  <div class="col">
+
+    <div class="analysis-header">
+
+      <div class="analysis-eyebrow">
+        <span class="status-dot status-live"></span>
+        Live · 2026
+      </div>
+
+      <h1 class="analysis-title">Revenue Overview</h1>
+    
+
+      <p class="analysis-overview">
+        I denna korta analys ges en överblick av de intäkter som genererats under datasettets period. 
+        Datan sträcker sig mellan perioden <span class="nobr">2010-12-01</span> och <span class="nobr">2011-12-09.</span>
+        Fokus ligger på intäktsutveckling, månads och veckovisa trender.<br><br>
+
+        Notering: Datasettet begränsar möjligheterna för djupare analys kopplat till säsongsvariation. 
+        
+      </p>
+
+      <div class="findings-block">
+        <div class="findings-label">Insikter</div>
+        <div class="findings-list">
+          <div class="finding">Januari sticker ut - Ordervärde 19% över periodsgenomsnittet (635 vs 533) drivet av få ovanligt stora orders.</div>
+          <div class="finding">Stark försäljningstillväxt på veckobasis - Genomsnittlig intäktstillväxt på 1,95% per vecka.</div>
+          <div class="finding">Säsongseffekt levererar - Kraftig ökning av antal orders i fjärde kvartalet bidrar till starkt år.</div>
+        </div>
+      </div>
+
+      <div class="meta-row">
+        <div class="analysis-tags">
+          <span class="analysis-tag">Python</span>
+          <span class="analysis-tag">DuckDB</span>
+          <span class="analysis-tag">Pandas</span>
+          <span class="analysis-tag">Plotly</span>
+        </div>
+        <a class="github-link" href="https://github.com/DecsProject/retail-transaction-analysis/blob/main/Analysis/Notebooks/Revenue_Overview.ipynb" target="_blank">GitHub →</a>
+      </div>
+
+    </div>
+
+    <hr class="section-divider">
+
+
+    <div class="analysis-body">
+
+      <h2 class="section-heading">Totala intäkter</h2>
+       <p class="body-text">
+         Totala intäkter under datasettets period uppgår till <span class="nobr">£ 10 642 111</span>.
+         Datan sträcker sig mellan <span class="nobr">2010-12-01</span> och <span class="nobr">2011-12-09</span>, vilket innebär att intäkter från
+         <span class="nobr">2010 (£775 286)</span> endast representeras av december månads data medan <span class="nobr">2011 (£9 480 687)</span> täcker nästan hela året.
+         En djupare säsongsanalys är därav inte möjlig. Fokus ligger istället på intäktsutveckling, månads 
+         och veckovisa trender.<br>
+         December 2011 exkluderas ur de månadsvisa vyerna då endast 9 dagars data finns tillgängligt. 
+       </p>
+
+      <h2 class="section-heading">Månadsvisa intäkter</h2>
+       <p class="body-text">
+        Eftersom att datan sträcker sig över en relativt kort och ojämn tidsperiod så är en direkt YoY-jämförelse missvisande.
+        Lämpligast blir då att direkt zooma in och titta på skillnader över tid på månads och veckovis basis.<br>
+        Det är känt att olika branscher upplever olika säsongsmönster sett till när respektive högsäsong infaller. Inom retail
+        tenderar aktiviteten att öka markant runt november och december inför högtider. Detta speglas tydligt i försäljningen som under de tre
+        första kvartalen trendar svagt uppåt för att sedan accelerera in i fjärde kvartalet. November är datasettets klart starkaste månad med en intäktsökning på 30%
+        mot föregående månad.
+       </p>
+      
+      <div class="chart-wrap">
+        <div class="chart-label">Intäkt per månad</div>
+        <iframe class="chart-embed" src="charts/monthly_revenue.html"></iframe>
+      </div>
+      
+      <h2 class="section-heading">Veckovisa intäkter</h2>
+      <p class="body-text">
+        En av de tydliga begränsningarna med datasettet är avsaknaden av jämförelse YoY. Men på veckovis data så har vi
+        faktiskt möjligheten att jämföra den överlappande period i datasettets start och slut.<br>
+        Mellan de två godtyckligt jämförbara perioderna, <span class="nobr">2010-12-01</span> till <span class="nobr">2010-12-13 (£508 068)</span> och <span class="nobr">2011-11-28</span> till <span class="nobr">2011-12-09 (£832 876)</span>, har
+        försäljningen ökat med 64% på årsbasis, vilket stärker bilden av ett starkt 2011.<br>
+        Trots den stabila underliggande tillväxten går det att urskilja viss betydande fluktuation i intäkter vecka till vecka. Enskilda
+        veckor kan avvika med 30-40% från närliggande veckor. Denna fluktuation är främst påtaglig i början av Q1 och under Q4, däremellan är det mer stabilt.
+      </p>
+      
+      <div class="chart-wrap">
+        <div class="chart-label">Intäkt per vecka</div>
+        <iframe class="chart-embed" src="charts/weekly_revenue.html"></iframe>
+      </div>
+      
+      <h2 class="section-heading">Veckovis tillväxt</h2>
+      <p class="body-text">
+      Den sammansatta veckovisa tillväxten (CAGR) under datasettets period uppgår till 1,95% per vecka. Detta motsvarar
+      närmare en fördubbling av veckointäkterna från periodens start till slut. Tillsammans med de 64% i tillväxt som 
+      jämförelsen mellan de två perioderna i 2010 och 2011 indikerade tyder detta på att 2011 var ett starkt år.
+      </p>
+
+      <div class="chart-wrap">
+        <div class="chart-label">Veckovis intäktstillväxt (WoW)</div>
+        <iframe class="chart-embed" src="charts/wow_revenue_growth.html"></iframe>
+      </div>
+
+      <h2 class="section-heading">Orders per månad</h2>
+      <p class="body-text">
+        Orderläggningen följer i stort sett samma mönster som intäkterna under året, vilket tyder på att tillväxten främst 
+        drivits av fler köp snarare än högre ordervärden. De marginella avvikelserna mellan 
+        orders och intäkter som vi kan se indikerar att ordervärde tidvis fluktuerar. 
+      </p>
+
+      <div class="chart-wrap">
+        <div class="chart-label">Antal orders per månad</div>
+        <iframe class="chart-embed" src="charts/monthly_orders.html"></iframe>
+      </div>
+
+      <h2 class="section-heading">Intäkt per order</h2>
+      <p class="body-text">
+        Det genomsnittliga ordervärdet över hela datasettet är £533. De allra flesta månader avviker inte särskilt mycket ifrån detta med undantag av
+        både januari och december 2011. Då endast 9 dagar av data från december 2011 finns så är januari 2011 av större intresse. 
+        Januaris genomsnittliga ordervärde uppgick till £635, vilket är 19% över periodens genomsnitt. Trots en av de svagare
+        månaderna sett till antalet orders (1216) så var januari en stark månad, främst drivet av de högre ordervärdena. 
+        Denna ökning av ordervärden i januari speglar ett möjligt skifte i kundbeteende efter nyår. Kunder kommer tillbaka från ledigheter, 
+        lager ska fyllas på, nya produkter ska testas. 
+      </p>
+
+      <div class="chart-wrap">
+        <div class="chart-label">Genomsnittligt ordervärde per månad</div>
+        <iframe class="chart-embed" src="charts/monthly_revenue_order.html"></iframe>
+      </div>
+
+      <h2 class="section-heading">Sammanfattning</h2>
+      <div class="body-text">
+        <div class="finding">Intäkter visar tydlig trend uppåt under 2011.</div>
+        <div class="finding">Tillväxt är främst driven av fler orders.</div>
+        <div class="finding">Intäkter per order fortsätter vara relativt stabil med undantag för januari.</div>
+        <div class="finding">Stark säsongseffekt som peakar i november.</div>
+        <div class="finding">Viss kortsiktig fluktuation i intäkter på veckobasis.</div>
+      </div>
+
+      <p class="body-text" style="margin-top:1rem;opacity:0.6;font-size:13px;">
+        Notering: Viss revidering av analysen finns i notebooken. Bland annat justeringar att inte inkludera vissa 
+        icke-försäljningsrelaterade transaktioner. 
+      </p>
+
+    </div>
+  </div>
+
+</body>
+</html>
