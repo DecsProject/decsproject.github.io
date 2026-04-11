@@ -1,1 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
 
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Performance | DecsProject</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;}
+
+    body{
+      font-family:'DM Sans',sans-serif;
+      color:#1a1a1a;
+      background-color:#f2ede8;
+      min-height:100vh;
+      padding:2.5rem 0 8rem;
+      position:relative;
+      overflow-x:hidden;
+    }
+
+    body::before{
+      content:'';position:fixed;inset:0;pointer-events:none;z-index:100;opacity:0.035;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size:200px 200px;mix-blend-mode:multiply;
+    }
+
+    @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+    @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+
+    .top-bar{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 2.5rem;
+      margin-bottom:3.5rem;
+      animation:fadeIn 0.5s ease both;
+      position:relative;z-index:2;
+    }
+    .page-wrap {
+      max-width: 1600px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 0 20px;
+    }
+    .site-name{
+      font-family:'Josefin Sans',sans-serif;
+      font-size:1.15rem;font-weight:300;
+      letter-spacing:0.12em;
+      color:#1a1a1a;text-decoration:none;
+      transition:opacity 0.15s;
+    }
+    .site-name:hover{opacity:0.6;}
+    .back-link{
+      font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.15em;
+      text-transform:uppercase;color:#888;text-decoration:none;
+      transition:color 0.15s;
+    }
+    .back-link:hover{color:#1a1a1a;}
+
+    .col{
+      max-width:740px;margin:0 auto;padding:0 5rem;
+      position:relative;z-index:2;
+    }
+
+    .analysis-header{
+      margin-bottom:2.75rem;
+      animation:fadeUp 0.7s ease 0.1s both;
+    }
+    .analysis-eyebrow{
+      font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.2em;
+      text-transform:uppercase;color:#888;
+      margin-bottom:0.9rem;
+      display:flex;align-items:center;gap:10px;
+    }
+    .status-dot{
+      display:inline-block;width:5px;height:5px;border-radius:50%;
+      position:relative;top:-1px;
+    }
+    .status-live{background:#1D9E75;}
+    .status-wip{background:#BA7517;}
+
+    .analysis-title{
+      font-family:'Libre Baskerville',serif;
+      font-size:clamp(1.8rem,4vw,2.4rem);
+      font-weight:700;line-height:1.1;
+      letter-spacing:-0.02em;
+      margin-bottom:1.1rem;
+    }
+    .analysis-title em{font-style:italic;font-weight:400;}
+
+    .analysis-overview{
+      font-size:14px;color:#555;line-height:1.9;
+      font-weight:300;
+      margin-bottom:1.75rem;
+    }
+    
+    .findings-block{
+      background:rgba(255,255,255,0.6);
+      border:0.5px solid rgba(0,0,0,0.1);
+      border-radius:10px;
+      padding:1.25rem 1.5rem;
+      margin-bottom:1.75rem;
+    }
+    .findings-label{
+      font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.2em;
+      text-transform:uppercase;color:#aaa;
+      margin-bottom:0.9rem;
+    }
+    .findings-list{
+      display:flex;flex-direction:column;gap:0.6rem;
+    }
+    .finding{
+      display:flex;align-items:baseline;gap:0.65rem;
+      font-size:13px;color:#444;line-height:1.6;font-weight:300;
+    }
+    .finding::before{
+      content:'';
+      display:inline-block;
+      width:4px;height:4px;border-radius:50%;
+      background:#1a1a1a;opacity:0.3;
+      flex-shrink:0;position:relative;top:-2px;
+    }
+
+    .meta-row{
+      display:flex;align-items:center;justify-content:space-between;
+      flex-wrap:wrap;gap:0.75rem;
+    }
+    .analysis-tags{display:flex;gap:6px;flex-wrap:wrap;}
+    .analysis-tag{
+      font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.1em;
+      text-transform:uppercase;padding:3px 8px;
+      border:0.5px solid rgba(0,0,0,0.2);border-radius:2px;color:#555;
+    }
+    .github-link{
+      display:inline-flex;align-items:center;gap:6px;
+      font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;
+      text-transform:uppercase;text-decoration:none;
+      color:#888;transition:color 0.15s;
+      padding-bottom:0.15rem;
+      border-bottom:0.5px solid rgba(0,0,0,0.15);
+      white-space:nowrap;
+    }
+    .github-link:hover{color:#1a1a1a;border-bottom-color:rgba(0,0,0,0.4);}
+
+    .section-divider{
+      border:none;border-top:1px solid rgba(0,0,0,0.1);
+      margin:2.75rem 0;
+    }
+
+    .section-heading{
+      font-family:'Libre Baskerville',serif;
+      font-size:1.2rem;font-weight:700;
+      letter-spacing:-0.01em;
+      margin:2.5rem 0 0.75rem;
+      color:#1a1a1a;
+    }
+    .section-heading:first-child{margin-top:0;}
+
+    .body-text{
+      font-size:14px;color:#444;line-height:1.9;
+      font-weight:300;
+      margin-bottom:1.25rem;
+    }
+    .chart-wrap{
+      margin:1.75rem 0;
+      border-radius:10px;
+      overflow:hidden;
+      border:0.5px solid rgba(0,0,0,0.08);
+      background:#fff;
+    }
+    .chart-label{
+      font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.15em;
+      text-transform:uppercase;color:#aaa;
+      padding:0.75rem 1rem 0;
+    }
+    .chart-embed{
+      width:100%;
+      height:400px;
+      border:none;
+      display:block;
+    }
+    .table-wrap{
+      margin:1.75rem 0;
+      overflow-x:auto;
+      border-radius:10px;
+      border:0.5px solid rgba(0,0,0,0.08);
+    }
+    .data-table{
+      width:100%;border-collapse:collapse;
+      font-size:12.5px;
+      background:#fff;
+    }
+    .data-table thead tr{
+      border-bottom:1px solid rgba(0,0,0,0.1);
+    }
+    .data-table th{
+      font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.12em;
+      text-transform:uppercase;color:#888;
+      padding:0.75rem 1rem;
+      text-align:left;font-weight:400;
+    }
+    .data-table td{
+      padding:0.65rem 1rem;
+      color:#444;font-weight:300;
+      border-bottom:0.5px solid rgba(0,0,0,0.06);
+    }
+    .data-table tbody tr:last-child td{border-bottom:none;}
+    .data-table tbody tr:hover td{background:rgba(0,0,0,0.015);}
+
+    .code-block{
+      margin:1.75rem 0;
+      border-radius:10px;
+      overflow:hidden;
+      border:0.5px solid rgba(0,0,0,0.1);
+    }
+    .code-toggle{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0.75rem 1rem;
+      background:#1a1a1a;
+      cursor:pointer;
+      user-select:none;
+    }
+    .code-toggle-label{
+      font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.15em;
+      text-transform:uppercase;color:rgba(255,255,255,0.5);
+    }
+    .code-toggle-icon{
+      font-family:'DM Mono',monospace;font-size:10px;
+      color:rgba(255,255,255,0.35);
+      transition:transform 0.25s ease;
+    }
+    .code-block.open .code-toggle-icon{transform:rotate(180deg);}
+    .code-body{
+      display:grid;grid-template-rows:0fr;
+      transition:grid-template-rows 0.35s cubic-bezier(0.4,0,0.2,1);
+      background:#242424;
+    }
+    .code-block.open .code-body{grid-template-rows:1fr;}
+    .code-body-inner{overflow:hidden;}
+    pre{
+      padding:1.25rem 1rem;
+      font-family:'DM Mono',monospace;font-size:12px;
+      line-height:1.7;color:#cdd5e0;
+      overflow-x:auto;
+      white-space:pre;
+    }
+
+    @media(max-width:600px){
+      body{padding:1.5rem 0 5rem;}
+      .top-bar{padding:0 1.25rem;margin-bottom:2.5rem;}
+      .col{padding:0 1.25rem;}
+      .analysis-title{font-size:1.6rem;}
+      .findings-block{padding:1rem 1.1rem;}
+      .meta-row{flex-direction:column;align-items:flex-start;}
+      .chart-embed{height:280px;}
+      .data-table th,.data-table td{padding:0.6rem 0.75rem;}
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page-wrap">
+
+  <div class="top-bar">
+    <a class="site-name" href="index.html">DecsProject</a>
+    <a class="back-link" href="index.html" onclick="history.back(); return false;">← Back</a>
+  </div>
+
+  <div class="col">
+    <!-- start -->
+    <div class="analysis-header">
+
+      <div class="analysis-eyebrow">
+        <span class="status-dot status-live"></span>
+        Work in progress · 2026
+      </div>
+
+      <h1 class="analysis-title">Coming Soon</h1>
+      <p class="analysis-overview">
+        Ready on github. See link below.
+      </p>
+
+       <div class="meta-row">
+         <a class="github-link" href="https://github.com/DecsProject/retail-transaction-analysis/blob/main/Analysis/Notebooks/02_Product_Performance.ipynb" target="_blank">GitHub →</a>
+       </div>
+      
+    </div>
+    <!-- end -->
+
+  </div>
+  </div>
+
+</body>
+</html>
