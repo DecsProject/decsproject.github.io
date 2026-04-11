@@ -1,1 +1,911 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <!-- Google tag (gtag.js) -->
+  <!--
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-QHEW7YHGGK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-QHEW7YHGGK');
+  </script>
+  -->  
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pipeline & ETL | DecsProject</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;}
+
+    body{
+      font-family:'DM Sans',sans-serif;
+      color:#1a1a1a;
+      background-color:#f2ede8;
+      min-height:100vh;
+      padding:2.5rem 0 8rem;
+      position:relative;
+      overflow-x:hidden;
+    }
+
+    body::before{
+      content:'';position:fixed;inset:0;pointer-events:none;z-index:100;opacity:0.035;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size:200px 200px;mix-blend-mode:multiply;
+    }
+
+    @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+    @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+
+    .top-bar{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 2.5rem;
+      margin-bottom:3.5rem;
+      animation:fadeIn 0.5s ease both;
+      position:relative;z-index:2;
+    }
+    .page-wrap {
+      max-width: 1600px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 0 20px;
+    }
+    .site-name{
+      font-family:'Josefin Sans',sans-serif;
+      font-size:1.15rem;font-weight:300;
+      letter-spacing:0.12em;
+      color:#1a1a1a;text-decoration:none;
+      transition:opacity 0.15s;
+    }
+    .site-name:hover{opacity:0.6;}
+    .back-link{
+      font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.15em;
+      text-transform:uppercase;color:#888;text-decoration:none;
+      transition:color 0.15s;
+    }
+    .back-link:hover{color:#1a1a1a;}
+
+    .col{
+      max-width:740px;margin:0 auto;padding:0 5rem;
+      position:relative;z-index:2;
+    }
+
+    .analysis-header{
+      margin-bottom:2.75rem;
+      animation:fadeUp 0.7s ease 0.1s both;
+    }
+    .analysis-eyebrow{
+      font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.2em;
+      text-transform:uppercase;color:#888;
+      margin-bottom:0.9rem;
+      display:flex;align-items:center;gap:10px;
+    }
+    .status-dot{
+      display:inline-block;width:5px;height:5px;border-radius:50%;
+      position:relative;top:-1px;
+    }
+    .status-live{background:#1D9E75;}
+    .status-wip{background:#BA7517;}
+
+    .analysis-title{
+      font-family:'Libre Baskerville',serif;
+      font-size:clamp(1.8rem,4vw,2.4rem);
+      font-weight:700;line-height:1.1;
+      letter-spacing:-0.02em;
+      margin-bottom:1.1rem;
+    }
+    .analysis-title em{font-style:italic;font-weight:400;}
+
+    .analysis-overview{
+      font-size:14px;color:#555;line-height:1.9;
+      font-weight:300;
+      margin-bottom:1.75rem;
+    }
+    
+    .findings-block{
+      background:rgba(255,255,255,0.6);
+      border:0.5px solid rgba(0,0,0,0.1);
+      border-radius:10px;
+      padding:1.25rem 1.5rem;
+      margin-bottom:1.75rem;
+    }
+    .findings-label{
+      font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.2em;
+      text-transform:uppercase;color:#aaa;
+      margin-bottom:0.9rem;
+    }
+    .findings-list{
+      display:flex;flex-direction:column;gap:0.6rem;
+    }
+    .finding{
+      display:flex;align-items:baseline;gap:0.65rem;
+      font-size:13px;color:#444;line-height:1.6;font-weight:300;
+    }
+    .finding::before{
+      content:'';
+      display:inline-block;
+      width:4px;height:4px;border-radius:50%;
+      background:#1a1a1a;opacity:0.3;
+      flex-shrink:0;position:relative;top:-2px;
+    }
+
+    .meta-row{
+      display:flex;align-items:center;justify-content:space-between;
+      flex-wrap:wrap;gap:0.75rem;
+    }
+    .analysis-tags{display:flex;gap:6px;flex-wrap:wrap;}
+    .analysis-tag{
+      font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.1em;
+      text-transform:uppercase;padding:3px 8px;
+      border:0.5px solid rgba(0,0,0,0.2);border-radius:2px;color:#555;
+    }
+    .github-link{
+      display:inline-flex;align-items:center;gap:6px;
+      font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;
+      text-transform:uppercase;text-decoration:none;
+      color:#888;transition:color 0.15s;
+      padding-bottom:0.15rem;
+      border-bottom:0.5px solid rgba(0,0,0,0.15);
+      white-space:nowrap;
+    }
+    .github-link:hover{color:#1a1a1a;border-bottom-color:rgba(0,0,0,0.4);}
+
+    .section-divider{
+      border:none;border-top:1px solid rgba(0,0,0,0.1);
+      margin:2.75rem 0;
+    }
+
+
+    .section-heading{
+      font-family:'Libre Baskerville',serif;
+      font-size:1.2rem;font-weight:700;
+      letter-spacing:-0.01em;
+      margin:2.5rem 0 0.75rem;
+      color:#1a1a1a;
+    }
+    .section-heading:first-child{margin-top:0;}
+
+    .body-text{
+      font-size:14px;color:#444;line-height:1.9;
+      font-weight:300;
+      margin-bottom:1.25rem;
+    }
+
+    .chart-wrap{
+      margin:1.75rem 0;
+      border-radius:10px;
+      overflow:hidden;
+      border:0.5px solid rgba(0,0,0,0.08);
+      background:#fff;
+    }
+    .chart-label{
+      font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.15em;
+      text-transform:uppercase;color:#aaa;
+      padding:0.75rem 1rem 0;
+    }
+    .chart-embed{
+      width:100%;
+      height:400px;
+      border:none;
+      display:block;
+    }
+
+    .table-wrap{
+      margin:1.75rem 0;
+      overflow-x:auto;
+      border-radius:10px;
+      border:0.5px solid rgba(0,0,0,0.08);
+    }
+    .data-table{
+      width:100%;border-collapse:collapse;
+      font-size:12.5px;
+      background:#fff;
+    }
+    .data-table thead tr{
+      border-bottom:1px solid rgba(0,0,0,0.1);
+    }
+    .data-table th{
+      font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.12em;
+      text-transform:uppercase;color:#888;
+      padding:0.75rem 1rem;
+      text-align:left;font-weight:400;
+    }
+    .data-table td{
+      padding:0.65rem 1rem;
+      color:#444;font-weight:300;
+      border-bottom:0.5px solid rgba(0,0,0,0.06);
+    }
+    .data-table tbody tr:last-child td{border-bottom:none;}
+    .data-table tbody tr:hover td{background:rgba(0,0,0,0.015);}
+
+    .code-block{
+      margin:1.75rem 0;
+      border-radius:10px;
+      overflow:hidden;
+      border:0.5px solid rgba(0,0,0,0.1);
+    }
+    .code-toggle{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0.75rem 1rem;
+      background:#1a1a1a;
+      cursor:pointer;
+      user-select:none;
+    }
+    .code-toggle-label{
+      font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.15em;
+      text-transform:uppercase;color:rgba(255,255,255,0.5);
+    }
+    .code-toggle-icon{
+      font-family:'DM Mono',monospace;font-size:10px;
+      color:rgba(255,255,255,0.35);
+      transition:transform 0.25s ease;
+    }
+    .code-block.open .code-toggle-icon{transform:rotate(180deg);}
+    .code-body{
+      display:grid;grid-template-rows:0fr;
+      transition:grid-template-rows 0.35s cubic-bezier(0.4,0,0.2,1);
+      background:#242424;
+    }
+    .code-block.open .code-body{grid-template-rows:1fr;}
+    .code-body-inner{overflow:hidden;}
+    pre{
+      padding:1.25rem 1rem;
+      font-family:'DM Mono',monospace;font-size:12px;
+      line-height:1.7;color:#cdd5e0;
+      overflow-x:auto;
+      white-space:pre;
+    }
+
+    @media(max-width:600px){
+      body{padding:1.5rem 0 5rem;}
+      .top-bar{padding:0 1.25rem;margin-bottom:2.5rem;}
+      .col{padding:0 1.25rem;}
+      .analysis-title{font-size:1.6rem;}
+      .findings-block{padding:1rem 1.1rem;}
+      .meta-row{flex-direction:column;align-items:flex-start;}
+      .chart-embed{height:280px;}
+      .data-table th,.data-table td{padding:0.6rem 0.75rem;}
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page-wrap">
+
+  <div class="top-bar">
+    <a class="site-name" href="index.html">DecsProject</a>
+    <a class="back-link" href="index.html" onclick="history.back(); return false;">← Back</a>
+  </div>
+
+  <div class="col">
+
+    <div class="analysis-header">
+
+      <div class="analysis-eyebrow">
+        <span class="status-dot status-live"></span>
+        Live · 2026
+      </div>
+
+      <h1 class="analysis-title">Data Pipeline & ETL</h1>
+
+      <p class="analysis-overview">
+        Här går jag igenom den datapipeline som ligger till grund för samtliga analyser i projektet. 
+        Fokus ligger på beslut som tagits längs vägen, varför data struktureras som den gör, hur 
+        kvalitetsproblem identifieras och hanteras, och vad pipeline-arkitekturen möjliggör för 
+        analyserna. Fullständig kod finns tillgänglig på GitHub.
+      </p>
+
+      <div class="meta-row">
+        <div class="analysis-tags">
+          <span class="analysis-tag">Python</span>
+          <span class="analysis-tag">DuckDB</span>
+        </div>
+        <a class="github-link" href="https://github.com/DecsProject/retail-transaction-analysis/blob/main/Analysis/Notebooks/00_retail_origin.ipynb" target="_blank">GitHub →</a>
+      </div>
+
+    </div>
+
+    <hr class="section-divider">
+
+    <div class="analysis-body">
+
+      <h2 class="section-heading">Bakgrund</h2>
+      <p class="body-text">
+        Datasetet är hämtat från Kaggle och innehåller transaktionsdata från ett UK-baserat 
+        e-handelsföretag. Majoriteten av transaktionerna härstammar från Storbritannien med 
+        ett fåtal internationella kunder. Datasetet sträcker sig mellan <span class="nobr">2010-12-01</span> 
+        och <span class="nobr">2011-12-09</span> och innehåller drygt 541 909 rader.
+      </p>
+      
+      <p class="body-text">
+        Istället för att arbeta direkt mot rådata byggdes en strukturerad pipeline med separata 
+        lager för inläsning, rensning och analys. När syftet är att datan ska användas i flera 
+        analyser är det rimligt att organisera den på ett sätt som gör den återanvändbar. 
+        Struktur gör det även lättare att underhålla, vilket bör spegla hur man ska tänka kring robusta datamiljöer överlag.
+      </p>
+
+      <h2 class="section-heading">Datamodell</h2>
+      <p class="body-text">
+        Pipelinen är strukturerad i tre lager, raw, staging och mart, vilket ska spegla 
+        den typiska datamiljön som är uppbyggd i organisationer. Raw-lagret bevarar 
+        källdatan precis som den kommer in. Staging används för rensning och kvalitetskontroll. 
+        Mart är sedan det analytiska lagret där berikad och modellerad data finns tillgänglig för analys.
+      </p>
+      <p class="body-text">
+        Mart-lagret följer ett star-schema med <strong>retail_enriched</strong> som faktatabell, 
+        kompletterad av <strong>productdim</strong> och <strong>customerdim</strong> som dimensionstabeller. 
+        Faktatabellen innehåller transaktioner på radnivå med berikade features, medan dimensionstabellerna 
+        aggregerar egenskaper per produkt respektive kund. Detta möjliggör för joins i analyserna utan att 
+        behöva räkna om samma saker upprepade gånger.
+      </p>
+
+      <div class="code-block" onclick="this.classList.toggle('open')">
+        <div class="code-toggle">
+          <span class="code-toggle-label">Python - Data cleaning</span>
+          <span class="code-toggle-icon">▾</span>
+        </div>
+        <div class="code-body"><div class="code-body-inner">
+<pre>
+          online_retail.csv
+                 │
+                 ▼
+          ┌─────────────────────────────┐
+          │  raw                        │
+          │  └─ raw.retail              │
+          └─────────────────────────────┘
+                 │  deduplicering, flaggning
+                 ▼
+          ┌─────────────────────────────────────────┐
+          │  staging                                │
+          │  ├─ retail_clean   (rensat, 16 flaggor) │
+          │  └─ top_anomalies  (extremvärden)       │
+          └─────────────────────────────────────────┘
+                 │  enrichment, feature engineering
+                 ▼
+          ┌──────────────────────────────────────────────┐
+          │  mart                                        │
+          │  ├─ retail_enriched  (faktatabell)           │
+          │  │    ├─ productdim  (produktdimension)      │
+          │  │    └─ customerdim (kunddimension)         │
+          └──────────────────────────────────────────────┘
+</pre>
+        </div></div>
+      </div>
+      
+      <h2 class="section-heading">Raw → Staging</h2>
+      <p class="body-text">
+          Det första steget är att läsa in källdatan och strukturera den i en databas. 
+          Valet att använda DuckDB istället för att arbeta direkt mot CSV-filen i pandas var medvetet. 
+          Syftet var att i detta projekt jobba mot en riktig databasmiljö, använda SQL och förstå hur 
+          information flödar i lager. 
+       </p>
+       <p class="body-text">
+          Tre scheman skapas för att separera de olika lagren, raw, staging och mart. 
+          Rådata läses först in i raw.retail och bevaras orörd. Därefter skapas staging.retail_clean 
+          genom att ta bort dubbletter med SELECT DISTINCT. Av de ursprungliga 541 909 raderna 
+          var 5 268 dubbletter, och kvar fick vi 536 641 unika rader.
+      </p>
+      
+      <div class="code-block" onclick="this.classList.toggle('open')">
+      <div class="code-toggle">
+      <span class="code-toggle-label">DuckDB - Inläsning & dubbletthantering</span>
+      <span class="code-toggle-icon">▾</span>
+      </div>
+      <div class="code-body"><div class="code-body-inner">
+<pre>
+-- Skapar scheman för pipeline-strukturen
+CREATE SCHEMA IF NOT EXISTS raw;
+CREATE SCHEMA IF NOT EXISTS staging;
+CREATE SCHEMA IF NOT EXISTS mart;
+
+-- Läser in CSV till raw-lagret
+CREATE OR REPLACE TABLE raw.retail AS
+SELECT *
+FROM read_csv_auto('online_retail.csv')
+
+-- Tar bort dubbletter i staging
+CREATE OR REPLACE TABLE staging.retail_clean AS
+SELECT DISTINCT *
+FROM raw.retail
+
+-- Verifiering: 541 909 rader → 536 641 unika
+SELECT
+    COUNT(*) AS total_rows,
+    COUNT(DISTINCT (invoiceno, stockcode, description,
+                    quantity, unitprice, invoicedate,
+                    customerid, country)) AS distinct_rows
+FROM staging.retail_clean
+</pre>
+  </div></div>
+</div>
+      
+      <h2 class="section-heading">Flaggning</h2>
+      <p class="body-text">
+        Istället för att rensa bort problematiska rader så flaggas de med binära kolumner.
+        Anledningen är att en avvikande rad data inte nödvändigtvis är fel, det kan vara specialfall 
+        där det fortfarande finns underliggande affärslogik. Att då ta bort dessa är att ta bort
+        möjligheten framöver att även inkludera eller isolera dem i relevanta analyser.
+      </p>
+
+      <p class="body-text">
+        Flaggorna fungerar också som grund för en datakatalog, där de kartlägger affärslogiken
+        och gör det möjligt att i analyssteget filtrera och/eller inkludera det som passar bäst för
+        det fokus analysen har. Målet är att staging-lagret ska spegla verksamheten så bra som möjligt.<br>
+        I och med att vi inte har kontroll över datainsamlingen så är det just här vi har bäst möjlighet att
+        påverka datans kvalitét.
+      </p>
+
+      <p class="body-text">
+        Rader med extremvärden långt utanför spannet av normal affärslogik, såsom ovanligt
+        stora kvantiteter, extrema priser eller kunder med ovanliga köpmönster, samlades specifikt i
+        anomali-listan staging.top_anomalies. De tas inte bort från tabellen retail_clean, utan isoleras separat
+        för att lättare kunna inkluderas eller exkluderas.
+      </p>
+
+      <div class="code-block" onclick="this.classList.toggle('open')">
+  <div class="code-toggle">
+    <span class="code-toggle-label">DuckDB - Kvalitetsflaggor</span>
+    <span class="code-toggle-icon">▾</span>
+  </div>
+  <div class="code-body"><div class="code-body-inner">
+<pre>
+-- 16 binära flaggor adderas till staging.retail_clean
+CREATE OR REPLACE TABLE staging.retail_clean AS
+SELECT *,
+    CASE WHEN invoiceno LIKE 'C%' THEN 1 ELSE 0 END AS is_credit_invoice,
+
+    CASE
+        WHEN stockcode ILIKE 'M'    THEN 0
+        WHEN stockcode ILIKE 'DOT'  THEN 0
+        WHEN stockcode ILIKE 'POST' THEN 0
+        WHEN description ILIKE '%AMAZON%'  THEN 0
+        WHEN description ILIKE '%MANUAL%'  THEN 0
+        WHEN description ILIKE '%POST%'    THEN 0
+        ELSE 1
+    END AS is_product,
+
+    CASE WHEN quantity < 0  THEN 1 ELSE 0 END AS is_negative_quantity,
+    CASE WHEN quantity > 50 THEN 1 ELSE 0 END AS is_extreme_quantity,
+    CASE WHEN quantity = 0  THEN 1 ELSE 0 END AS is_zero_quantity,
+    CASE WHEN unitprice < 0 THEN 1 ELSE 0 END AS is_negative_unitprice,
+    CASE WHEN unitprice > 20 THEN 1 ELSE 0 END AS is_extreme_unitprice,
+    CASE WHEN unitprice = 0  THEN 1 ELSE 0 END AS is_zero_unitprice,
+    CASE WHEN customerid IS NULL THEN 1 ELSE 0 END AS is_missing_customerid,
+    CASE WHEN description IS NULL
+          OR TRIM(description) = ' ' THEN 1 ELSE 0 END AS is_missing_description,
+    CASE WHEN stockcode IS NULL
+          OR stockcode = ' ' THEN 1 ELSE 0 END AS is_missing_stockcode,
+    CASE WHEN invoiceno IS NULL
+          OR invoiceno = ' ' THEN 1 ELSE 0 END AS is_missing_invoiceno,
+    CASE WHEN country NOT IN (
+        'Australia','Austria','Bahrain','Belgium','Brazil',
+        'Canada','Cyprus','Czech Republic','Denmark','Finland',
+        'France','Germany','Greece','Hong Kong','Iceland',
+        'Israel','Italy','Japan','Lebanon','Lithuania','Malta',
+        'Netherlands','Norway','Poland','Portugal','RSA',
+        'Saudi Arabia','Singapore','Spain','Sweden','Switzerland',
+        'USA','United Arab Emirates','United Kingdom'
+    ) THEN 1 ELSE 0 END AS is_unusual_country
+
+FROM staging.retail_clean
+
+-- Anomalier isoleras i en separat tabell
+CREATE OR REPLACE TABLE staging.top_anomalies AS
+    SELECT *, 'extreme_quantity' AS anomaly_type
+    FROM staging.retail_clean WHERE quantity >= 74215
+UNION ALL
+    SELECT *, 'extreme_unitprice' AS anomaly_type
+    FROM staging.retail_clean WHERE unitprice >= 500
+UNION ALL
+    SELECT s.*, 'anomaly_customer' AS anomaly_type
+    FROM staging.retail_clean s
+    WHERE s.customerid IN (
+        SELECT customerid
+        FROM staging.retail_clean
+        GROUP BY customerid
+        HAVING SUM(CASE WHEN quantity * unitprice > 0
+                   THEN quantity * unitprice END) > 10000
+        AND ABS(SUM(quantity * unitprice)) <
+            SUM(CASE WHEN quantity * unitprice > 0
+                THEN quantity * unitprice END) * 0.05
+    )
+</pre>
+  </div></div>
+</div>
+
+      <h2 class="section-heading">Enrichment & feature engineering</h2>
+      <p class="body-text">
+        Efter att datan rensats och flaggats så blev nästa naturliga steg att berika den.
+        Ytterligare information som inte finns direkt i datan men som kan härledas från
+        datapunkterna adderas, dels för att skapa en mer komplett bild av verksamheten, men
+        också för att underlätta vid framtida analyser. Tanken var att väl genomtänkta
+        dimensioner kan svara på en mängd olika frågor.
+      </p>
+      
+      <p class="body-text">
+        Tidsbaserade features time_of_day, quarter, is_peak_season och 
+        is_payday_window härleds från invoicedate. Dessa gör det möjligt att bl.a. analysera
+        när kunder är aktiva och identifiera säsongsmönster för att planera riktade insatser
+        som kampanjer, lagerstyrning eller bemanning.<br>
+        I de flesta fall är features helt baserade på vad som finns i rådatan, men i andra såsom
+        högtider så läser vi in separata CSV med data och kopplar med befintlig data. Detta är ett
+        smidigare sätt än att manuellt markera händelser som kan variera år för år eller dag för dag.
+      </p>
+      
+      <p class="body-text">
+        Transaktionsbaserade features som basket_value, basket_lines, share_of_basket
+        och is_return_line beräknas med fönsterfunktioner partitionerade på invoiceno.
+        Dessa ger en bild av köpbeteendet på ordernivå, exempelvis hur stora ordrar är, hur
+        många unika produkter de innehåller eller hur enskilda rader förhåller sig till 
+        hela ordern.
+      </p>
+
+      <div class="code-block" onclick="this.classList.toggle('open')">
+  <div class="code-toggle">
+    <span class="code-toggle-label">DuckDB - Tidsbaserad enrichment</span>
+    <span class="code-toggle-icon">▾</span>
+  </div>
+  <div class="code-body"><div class="code-body-inner">
+<pre>
+-- Skapar faktatabellen med tidsbaserade features
+CREATE OR REPLACE TABLE mart.retail_enriched AS
+SELECT *,
+    EXTRACT(year  FROM invoicedate) AS year,
+    EXTRACT(month FROM invoicedate) AS month,
+    EXTRACT(dow   FROM invoicedate) AS weekday_number,
+    dayname(invoicedate)            AS weekday_name,
+    EXTRACT(hour  FROM invoicedate) AS hour,
+    EXTRACT(week  FROM invoicedate) AS week,
+
+    CASE
+        WHEN EXTRACT(hour FROM invoicedate) BETWEEN 0  AND 5  THEN 'Night'
+        WHEN EXTRACT(hour FROM invoicedate) BETWEEN 6  AND 11 THEN 'Morning'
+        WHEN EXTRACT(hour FROM invoicedate) BETWEEN 12 AND 17 THEN 'Afternoon'
+        ELSE 'Evening'
+    END AS time_of_day,
+
+    CASE
+        WHEN EXTRACT(month FROM invoicedate) IN (12,1,2) THEN 'Winter'
+        WHEN EXTRACT(month FROM invoicedate) IN (3,4,5)  THEN 'Spring'
+        WHEN EXTRACT(month FROM invoicedate) IN (6,7,8)  THEN 'Summer'
+        ELSE 'Fall'
+    END AS season,
+
+    CASE
+        WHEN EXTRACT(month FROM invoicedate) IN (1,2,3) THEN 'Q1'
+        WHEN EXTRACT(month FROM invoicedate) IN (4,5,6) THEN 'Q2'
+        WHEN EXTRACT(month FROM invoicedate) IN (7,8,9) THEN 'Q3'
+        ELSE 'Q4'
+    END AS quarter,
+
+    CASE
+        WHEN EXTRACT(dow FROM invoicedate) IN (1,2,3,4,5) THEN 'Weekday'
+        ELSE 'Weekend'
+    END AS day_type,
+
+    CASE
+        WHEN EXTRACT(month FROM invoicedate) IN (11,12) THEN 1
+        ELSE 0
+    END AS is_peak_season,
+
+    CASE
+        WHEN DATE(invoicedate) BETWEEN
+            date_trunc('month', DATE(invoicedate)) + INTERVAL 24 DAY
+            AND date_trunc('month', DATE(invoicedate)) + INTERVAL 28 DAY
+        THEN 1 ELSE 0
+    END AS is_payday_window
+
+FROM staging.retail_clean
+
+-- Högtider kopplas via LEFT JOIN på datumintervall
+CREATE OR REPLACE TABLE mart.retail_enriched AS
+SELECT r.*,
+    h.holiday_name,
+    h.window_name AS holiday_window,
+    CASE WHEN h.holiday_name IS NOT NULL THEN 1 ELSE 0 END AS is_holiday,
+    CASE WHEN DATE(r.invoicedate)
+         BETWEEN h.window_start AND h.window_end
+         THEN 1 ELSE 0 END AS is_holiday_window
+FROM mart.retail_enriched r
+LEFT JOIN holidays h
+    ON DATE(r.invoicedate) BETWEEN h.window_start AND h.window_end
+    OR DATE(r.invoicedate) = h.holiday_date
+</pre>
+  </div></div>
+</div>
+
+<div class="code-block" onclick="this.classList.toggle('open')">
+  <div class="code-toggle">
+    <span class="code-toggle-label">DuckDB - Transaktionsbaserad enrichment</span>
+    <span class="code-toggle-icon">▾</span>
+  </div>
+  <div class="code-body"><div class="code-body-inner">
+<pre>
+-- Basket-metrics beräknas med fönsterfunktioner på invoiceno
+CREATE OR REPLACE TABLE mart.retail_enriched AS
+SELECT r.*,
+    quantity * unitprice AS total_price,
+
+    COUNT(*)              OVER(PARTITION BY invoiceno) AS basket_lines,
+    SUM(quantity)         OVER(PARTITION BY invoiceno) AS basket_size,
+    SUM(quantity * unitprice) OVER(PARTITION BY invoiceno) AS basket_value,
+    COUNT(DISTINCT stockcode) OVER(PARTITION BY invoiceno) AS basket_unique_items,
+
+    CASE WHEN quantity > 0 THEN
+        (quantity * unitprice) / NULLIF(
+            SUM(CASE WHEN quantity > 0 THEN quantity * unitprice END)
+            OVER(PARTITION BY invoiceno), 0)
+    END AS share_of_basket,
+
+    CASE WHEN SUM(quantity) OVER(PARTITION BY invoiceno) >= 240
+         THEN 1 ELSE 0 END AS is_large_basket,
+    CASE WHEN SUM(quantity * unitprice) OVER(PARTITION BY invoiceno) >= 400
+         THEN 1 ELSE 0 END AS is_expensive_basket,
+    CASE WHEN quantity = 1  THEN 1 ELSE 0 END AS is_single_item,
+    CASE WHEN quantity > 10 THEN 1 ELSE 0 END AS is_bulk_item,
+    CASE WHEN quantity < 0 AND invoiceno LIKE 'C%'
+         THEN 1 ELSE 0 END AS is_return_line
+
+FROM mart.retail_enriched r
+</pre>
+  </div></div>
+</div>
+      <h2 class="section-heading">Dimensionstabeller</h2>
+      <p class="body-text">
+        De två dimensionstabellerna productdim och customerdim är byggda på faktatabellen
+        retail_enriched. Dessa tabeller aggregerar data på produkt och kundnivå, vilket är de två datapunkter 
+        som dels driver mest värde, men som vi också har stor möjlighet att påverka i retailverksamheten.<br>  
+        Att skapa en mängd väl vägda features i dessa tabeller är då inte bara ett sätt att effektivisera
+        en process, utan även ett sätt att definiera centrala nyckeltal och göra dem jämförbara över tid. 
+      </p>
+      <p class="body-text">
+        Detta speglar också hur star-schema fungerar i praktiken, där faktatabellen 
+        är händelserna, dimensionstabellerna är sammanhanget. Pipelinen byggdes främst
+        med filosofin att en bra feature löser problem och effektiviserar genom att flytta 
+        logik från enskilda analyser till datamodellen.
+      </p>
+
+      <div class="code-block" onclick="this.classList.toggle('open')">
+  <div class="code-toggle">
+    <span class="code-toggle-label">DuckDB - productdim</span>
+    <span class="code-toggle-icon">▾</span>
+  </div>
+  <div class="code-body"><div class="code-body-inner">
+<pre>
+CREATE OR REPLACE TABLE mart.productdim AS
+SELECT
+    r.stockcode,
+    mode(r.description)                                     AS description,
+    MAX(is_product)                                         AS is_product,
+
+    -- Returmått
+    ABS(SUM(CASE WHEN is_return_line = 1
+        THEN total_price END))
+        / SUM(CASE WHEN total_price > 0
+        THEN total_price END)                               AS return_rate_value,
+    ABS(SUM(CASE WHEN is_return_line = 1
+        THEN quantity END))
+        / SUM(CASE WHEN quantity > 0
+        THEN quantity END)                                  AS return_rate_quantity,
+    COUNT(DISTINCT CASE WHEN is_return_line = 1
+        THEN invoiceno END)
+        / COUNT(DISTINCT invoiceno)                         AS return_rate_order,
+    ABS(SUM(CASE WHEN is_return_line = 1
+        THEN quantity END))                                 AS return_quantity,
+
+    -- Korgmått
+    AVG(basket_size)                                        AS avg_basket_size,
+    AVG(basket_value)                                       AS avg_basket_value,
+    AVG(share_of_basket)                                    AS avg_share_of_basket,
+    SUM(CASE WHEN quantity > 0 THEN quantity END)
+        / NULLIF(COUNT(DISTINCT CASE WHEN quantity > 0
+        THEN invoiceno END), 0)                             AS avg_units_sold,
+
+    -- Försäljningsmått
+    SUM(CASE WHEN quantity > 0
+        THEN quantity END)                                  AS total_quantity_sold,
+    SUM(CASE WHEN total_price > 0
+        THEN total_price END)                               AS total_sales,
+    AVG(CASE WHEN quantity > 0
+        THEN unitprice END)                                 AS avg_unit_price,
+    AVG(CASE WHEN quantity > 0
+        THEN total_price END)                               AS avg_line_revenue,
+
+    -- Räckvidd
+    COUNT(DISTINCT CASE WHEN quantity > 0
+        THEN country END)                                   AS unique_countries,
+    COUNT(DISTINCT CASE WHEN quantity > 0
+        THEN customerid END)                                AS unique_customers,
+    COUNT(DISTINCT CASE WHEN quantity > 0
+        THEN invoiceno END)                                 AS orders_with_product,
+    COUNT(DISTINCT CASE WHEN quantity > 0 THEN invoiceno END)
+        / NULLIF((SELECT COUNT(DISTINCT invoiceno)
+                  FROM mart.retail_enriched
+                  WHERE quantity > 0), 0)                   AS order_penetration,
+    COUNT(DISTINCT CASE WHEN quantity > 0 THEN invoiceno END)
+        / NULLIF(COUNT(DISTINCT CASE WHEN quantity > 0
+        THEN customerid END), 0)                            AS order_per_customer,
+
+    -- Livslängd
+    MIN(CASE WHEN quantity > 0
+        THEN invoicedate END)                               AS first_sale_date,
+    MAX(CASE WHEN quantity > 0
+        THEN invoicedate END)                               AS last_sale_date,
+    MAX(CASE WHEN quantity > 0 THEN invoicedate END)
+        - MIN(CASE WHEN quantity > 0
+        THEN invoicedate END)                               AS product_lifetime
+
+FROM mart.retail_enriched r
+GROUP BY r.stockcode
+</pre>
+  </div></div>
+</div>
+
+<div class="code-block" onclick="this.classList.toggle('open')">
+  <div class="code-toggle">
+    <span class="code-toggle-label">DuckDB - customerdim</span>
+    <span class="code-toggle-icon">▾</span>
+  </div>
+  <div class="code-body"><div class="code-body-inner">
+<pre>
+-- Hjälptabeller för kundfeatures som kräver fönsterlogik
+CREATE OR REPLACE TABLE customer_feature_avg_days_between AS
+WITH order_dates AS (
+    SELECT DISTINCT customerid, invoiceno, invoicedate
+    FROM mart.retail_enriched
+    WHERE quantity > 0
+),
+order_gaps AS (
+    SELECT customerid, invoicedate,
+        DATEDIFF('day',
+            LAG(invoicedate) OVER(
+                PARTITION BY customerid ORDER BY invoicedate),
+            invoicedate) AS days_between_orders
+    FROM order_dates
+)
+SELECT customerid,
+    AVG(days_between_orders)    AS avg_days_between_orders,
+    STDDEV(days_between_orders) AS order_interval_variability
+FROM order_gaps
+WHERE customerid IS NOT NULL
+GROUP BY customerid;
+
+-- Favoritköptimme per kund
+CREATE OR REPLACE TABLE customer_feature_favorite_hour AS
+WITH hour_counts AS (
+    SELECT customerid, hour, COUNT(*) AS purchases
+    FROM mart.retail_enriched WHERE quantity > 0
+    GROUP BY customerid, hour
+),
+ranked AS (
+    SELECT *, ROW_NUMBER() OVER(
+        PARTITION BY customerid ORDER BY purchases DESC) AS rn
+    FROM hour_counts
+)
+SELECT customerid, hour AS favorite_purchase_hour
+FROM ranked WHERE rn = 1;
+
+-- Favoritköpdag per kund
+CREATE OR REPLACE TABLE customer_feature_favorite_day AS
+WITH day_counts AS (
+    SELECT customerid, weekday_name, COUNT(*) AS purchases
+    FROM mart.retail_enriched WHERE quantity > 0
+    GROUP BY customerid, weekday_name
+),
+ranked AS (
+    SELECT *, ROW_NUMBER() OVER(
+        PARTITION BY customerid ORDER BY purchases DESC) AS rn
+    FROM day_counts
+)
+SELECT customerid, weekday_name AS favorite_purchase_day
+FROM ranked WHERE rn = 1;
+
+-- Toppprodukt per kund
+CREATE OR REPLACE TABLE customer_feature_top_product AS
+WITH product_counts AS (
+    SELECT customerid, stockcode, COUNT(*) AS purchases
+    FROM mart.retail_enriched WHERE quantity > 0
+    GROUP BY customerid, stockcode
+),
+ranked AS (
+    SELECT *, ROW_NUMBER() OVER(
+        PARTITION BY customerid ORDER BY purchases DESC) AS rn
+    FROM product_counts
+)
+SELECT customerid, stockcode AS top_product
+FROM ranked WHERE rn = 1;
+
+-- Huvudtabell: samlar alla kundfeatures
+CREATE OR REPLACE TABLE mart.customerdim AS
+SELECT
+    a.customerid,
+    d.avg_days_between_orders,
+    d.order_interval_variability,
+    h.favorite_purchase_hour,
+    day.favorite_purchase_day,
+    tp.top_product,
+
+    COUNT(DISTINCT CASE WHEN quantity > 0
+        THEN invoiceno END)                                 AS total_orders,
+    SUM(CASE WHEN total_price > 0
+        THEN total_price END)                               AS total_spend,
+    SUM(CASE WHEN total_price > 0 THEN total_price END)
+        / NULLIF(COUNT(DISTINCT CASE WHEN total_price > 0
+        THEN invoiceno END), 0)                             AS avg_order_value,
+    SUM(CASE WHEN quantity > 0
+        THEN quantity END)                                  AS total_units,
+    SUM(CASE WHEN quantity > 0 THEN quantity END)
+        / NULLIF(COUNT(DISTINCT CASE WHEN quantity > 0
+        THEN invoiceno END), 0)                             AS avg_units_per_order,
+    MAX(CASE WHEN quantity > 0
+        THEN invoicedate END)                               AS last_purchase_date,
+    DATEDIFF('day',
+        MAX(CASE WHEN quantity > 0 THEN invoicedate END),
+        '2011-12-09')                                       AS days_since_last_purchase,
+    COUNT(DISTINCT CASE WHEN quantity > 0 THEN invoiceno END)
+        / NULLIF(DATEDIFF('month',
+            MIN(CASE WHEN quantity > 0 THEN invoicedate END),
+            MAX(CASE WHEN quantity > 0 THEN invoicedate END)
+        ), 0)                                               AS orders_per_month,
+    MIN(CASE WHEN quantity > 0
+        THEN invoicedate END)                               AS first_purchase_date,
+    DATEDIFF('day',
+        MIN(CASE WHEN quantity > 0 THEN invoicedate END),
+        MAX(CASE WHEN quantity > 0 THEN invoicedate END))   AS customer_lifetime_days,
+    COUNT(DISTINCT CASE WHEN quantity > 0
+        THEN stockcode END)                                 AS unique_items,
+    SUM(CASE WHEN total_price > 0 THEN total_price END)
+        / NULLIF(DATEDIFF('month',
+            MIN(CASE WHEN quantity > 0 THEN invoicedate END),
+            MAX(CASE WHEN quantity > 0 THEN invoicedate END)
+        ), 0)                                               AS avg_monthly_spend,
+    CASE WHEN COUNT(DISTINCT CASE WHEN quantity > 0
+        THEN invoiceno END) > 1 THEN 1 ELSE 0
+    END                                                     AS is_repeat_buyer,
+    SUM(CASE WHEN quantity < 0
+        THEN ABS(quantity) END)                             AS return_units,
+    COUNT(DISTINCT CASE WHEN quantity < 0 THEN invoiceno END)
+        / NULLIF(COUNT(DISTINCT CASE WHEN quantity > 0
+        THEN invoiceno END), 0)                             AS return_rate_order,
+    SUM(CASE WHEN total_price < 0 THEN ABS(total_price) END)
+        / NULLIF(SUM(CASE WHEN total_price > 0
+        THEN total_price END), 0)                           AS return_rate_value
+
+FROM mart.retail_enriched a
+LEFT JOIN customer_feature_avg_days_between d ON a.customerid = d.customerid
+LEFT JOIN customer_feature_favorite_hour h    ON a.customerid = h.customerid
+LEFT JOIN customer_feature_favorite_day day   ON a.customerid = day.customerid
+LEFT JOIN customer_feature_top_product tp     ON a.customerid = tp.customerid
+WHERE a.customerid IS NOT NULL
+GROUP BY
+    a.customerid,
+    d.avg_days_between_orders,
+    d.order_interval_variability,
+    h.favorite_purchase_hour,
+    day.favorite_purchase_day,
+    tp.top_product
+</pre>
+  </div></div>
+    </div>
+
+
+
+      <h2 class="section-heading">Vad pipelinen möjliggör</h2>
+      <p class="body-text">
+        Med retail_enriched som faktatabell och productdim och customerdim som 
+        dimensionstabeller lades grunden för samtliga planerade analyser i projektet.
+        Pipelinen är byggd för att vara återanvändbar, där nya frågor kan ställas mot samma 
+        data utan att behöva återvända till rådata eller uppfinna features på nytt och riskera inkonsekventa mått.
+      </p>
+
+    </div>
+
+  </div>
+    </div>
+
+</body>
+</html>
