@@ -93,7 +93,7 @@
       font-weight:300;
       margin-bottom:1.75rem;
     }
-    
+
     .findings-block{
       background:rgba(255,255,255,0.6);
       border:0.5px solid rgba(0,0,0,0.1);
@@ -161,6 +161,7 @@
       font-weight:300;
       margin-bottom:1.25rem;
     }
+
     .chart-wrap{
       margin:1.75rem 0;
       border-radius:10px;
@@ -169,9 +170,9 @@
       background:#fff;
     }
     .chart-label{
-      font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.15em;
-      text-transform:uppercase;color:#aaa;
-      padding:0.75rem 1rem 0;
+      font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.12em;
+      text-transform:uppercase;color:#888;
+      padding:0.85rem 1rem 0.5rem;
     }
     .chart-embed{
       width:100%;
@@ -179,6 +180,7 @@
       border:none;
       display:block;
     }
+
     .table-wrap{
       margin:1.75rem 0;
       overflow-x:auto;
@@ -206,6 +208,8 @@
     }
     .data-table tbody tr:last-child td{border-bottom:none;}
     .data-table tbody tr:hover td{background:rgba(0,0,0,0.015);}
+    .data-table td.highlight-red { color: #c0392b; }
+    .data-table td.highlight-green { color: #1D9E75; }
 
     .code-block{
       margin:1.75rem 0;
@@ -245,6 +249,36 @@
       white-space:pre;
     }
 
+    /* Segment badge */
+    .segment-badge {
+      display: inline-block;
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border-radius: 2px;
+      font-weight: 500;
+    }
+    .segment-star  { background: #e6f4ee; color: #0f6e56; }
+    .segment-risky { background: #fdecea; color: #993c1d; }
+    .segment-niche { background: #f0eefd; color: #3c3489; }
+
+    .callout {
+      background: rgba(255,255,255,0.55);
+      border-left: 2px solid rgba(0,0,0,0.15);
+      border-radius: 0 8px 8px 0;
+      padding: 1rem 1.25rem;
+      margin: 1.5rem 0;
+      font-size: 13.5px;
+      color: #444;
+      line-height: 1.8;
+      font-weight: 300;
+    }
+    .callout strong { font-weight: 500; color: #1a1a1a; }
+
+    .nobr { white-space: nowrap; }
+
     @media(max-width:600px){
       body{padding:1.5rem 0 5rem;}
       .top-bar{padding:0 1.25rem;margin-bottom:2.5rem;}
@@ -263,29 +297,399 @@
 
   <div class="top-bar">
     <a class="site-name" href="../../index.html">DecsProject</a>
-    <a class="back-link" href="#" onclick="history.back(); return false;">← Back</a>
+    <a class="back-link" href="#" onclick="if(history.length > 1){ history.back(); } else { window.location='../index.html'; } return false;">← Back</a>
   </div>
 
   <div class="col">
-    <!-- start -->
+
     <div class="analysis-header">
 
       <div class="analysis-eyebrow">
         <span class="status-dot status-live"></span>
-        Work in progress · 2026
+        Live · 2026
       </div>
 
-      <h1 class="analysis-title">Coming Soon</h1>
+      <h1 class="analysis-title">Product <em>Performance</em></h1>
+
       <p class="analysis-overview">
-        Ready on github. See link below.
+        Vilka produkter driver verksamhetens intäkter - och gör det effektivt? Analysen undersöker
+        hur försäljningen är fördelad över en katalog med 3&nbsp;910 aktiva produkter, vilka produkter
+        uppvisar oroväckande returmönster, och var det finns outnyttjad potential.
+        Datan sträcker sig mellan <span class="nobr">2010-12-01</span> och <span class="nobr">2011-12-09</span>.
+        Anomalikunder filtreras bort för att bättre spegla kärnverksamheten.<br><br>
+        Vi mäter returer på tre sätt: returfrekvens (hur ofta en order innehåller en retur), returvärde 
+        (andel av intäkterna som returneras) och returkvantitet (andel av sålda enheter som returneras).
       </p>
 
-       <div class="meta-row">
-         <a class="github-link" href="https://github.com/DecsProject/retail-transaction-analysis/blob/main/Analysis/Notebooks/02_Product_Performance.ipynb" target="_blank">GitHub →</a>
-       </div>
-      
+      <div class="findings-block">
+        <div class="findings-label">Insikter</div>
+        <div class="findings-list">
+          <div class="finding">Försäljningen är fragmenterad - top 50 av 3&nbsp;910 produkter står för ~20% av intäkterna, vilket innebär att verksamheten inte är beroende av ett fåtal produkter.</div>
+          <div class="finding">Regency Cakestand 3 Tier sticker ut: bäst säljande produkt men med returfrekvens på 8,3% och returvärde på 5,6% - långt över genomsnittet.</div>
+          <div class="finding">Produktsegmenteringen (Stars / Risky / Niche) identifierar tydliga grupper för olika insatser: stabilisering, returreduktion och breddning.</div>
+        </div>
+      </div>
+
+      <div class="meta-row">
+        <div class="analysis-tags">
+          <span class="analysis-tag">Python</span>
+          <span class="analysis-tag">DuckDB</span>
+          <span class="analysis-tag">Pandas</span>
+          <span class="analysis-tag">Plotly</span>
+        </div>
+        <a class="github-link" href="https://github.com/DecsProject/retail-transaction-analysis/blob/main/Analysis/Notebooks/02_Product_Performance.ipynb" target="_blank">GitHub →</a>  
+      </div>
+
     </div>
-    <!-- end -->
+
+    <hr class="section-divider">
+
+    <div class="analysis-body">
+
+      <h2 class="section-heading">Översikt</h2>
+      <p class="body-text">
+        Totala intäkter under perioden uppgår till <span class="nobr">£10 261 632</span> 
+        fördelat över 3910 aktiva och handlade produkter. Den viktade returfrekvensen per 
+        order är <strong>1,59%</strong> och det viktade returvärdet uppgår till <strong>2,4%</strong> 
+        av intäkterna - båda måtten kan ses som relativt låga nivåer och ger oss en stabil utgångspunkt.
+      </p>
+
+    
+      <h2 class="section-heading">Försäljningsfördelning</h2>
+      <p class="body-text">
+        Bland de bäst säljande produkterna sticker <strong>Regency Cakestand 3 Tier</strong>
+        ut med försäljning på <span class="nobr">£174 157</span>, vilket bara är 1,7% av 
+        totala intäkter. Försäljningen per produkt avtar sedan snabbt nedåt i listan (nr1: £174k -> 20: £33k), 
+        och distributionen visar att de flesta produkter säljer för under £2500.
+      </p>
+
+      <div class="chart-wrap">
+        <div class="chart-label">Produktförsäljning - distribution</div>
+        <iframe class="chart-embed" src="charts/product_sales_dist.html"></iframe>
+      </div>
+
+      <div class="chart-wrap">
+        <div class="chart-label">Top 25 produkter - total försäljning</div>
+        <iframe class="chart-embed" src="charts/top25_sales.html"></iframe>
+      </div>
+
+      <p class="body-text">
+        Top 50 produkter (rankade på försäljning)  representerar 20,4% av 
+        intäkterna, men rankar vi på orderfrekvens sjunker andelen till 18,1%. 
+        Dessa 50 produkter utgör 1,28% av hela katalogen. Det finns alltså en 
+        viss koncentrationen, men den avtar snabbt och visar att en stor del av 
+        intäkterna är spridd över den breda katalogen. Verksamheten är robust och 
+        inte beroende av ett fåtal produkter.
+      </p>
+
+      <h2 class="section-heading">Orderfrekvens vs. försäljning</h2>
+      <p class="body-text">
+        Det finns en viss överlappning mellan produkter med hög total försäljning 
+        och produkter som förekommer ofta i orders, men den är begränsad. 
+        Detta belyser samspelet mellan pris och frekvens, där en produkt kan 
+        nå toppen antingen via högt pris med relativt få orders, eller via lågt 
+        pris med mycket hög volym.
+      </p>
+
+      <div class="chart-wrap">
+        <div class="chart-label">Orderfrekvens och total försäljning - top 25 (frekvens)</div>
+        <iframe class="chart-embed" src="charts/freq_vs_sales.html"></iframe>
+      </div>
+
+      <h2 class="section-heading">Returfrekvens bland topprodukter</h2>
+      <p class="body-text">
+        Bland top 25 (försäljning) har de flesta produkter en returfrekvens
+        nära eller under det viktade genomsnittet på 1,59%. Det är ett positivt
+        tecken och indikerar att kunder som beställer populära produkter ofta får 
+        sina förväntningar uppfyllda. Fem produkter sticker däremot ut över genomsnittet 
+        och bör tittas närmare på.
+      </p>
+
+      <div class="chart-wrap">
+        <div class="chart-label">Returfrekvens per order - top 25 (försäljning)</div>
+        <iframe class="chart-embed" src="charts/return_rate_topsale.html"></iframe>
+      </div>
+
+      <div class="chart-wrap">
+        <div class="chart-label">Returfrekvens per order - top 25 (frekvens)</div>
+        <iframe class="chart-embed" src="charts/return_rate_topfreq.html"></iframe>
+      </div>
+
+      <p class="body-text">
+        Returvärdesgraden ger en kompletterande bild. Bortsett från tre produkter 
+        har de bäst säljande varorna ett lägre returvärde än det viktade genomsnittet 
+        på 2,4%. Populära produkter bidrar alltså inte oproportionerligt till 
+        returkostnaderna, men med ett tydligt undantag.
+      </p>
+
+      <div class="callout">
+        <strong>Regency Cakestand 3 Tier</strong> avviker på båda returmåtten. 
+        Med en returfrekvens på 8,29% och returvärde på 5,57% sticker produkten 
+        ut långt över vad som kan ses som normalt. I och med att produkten är den 
+        klart bäst säljande i katalogen innebär detta att den också står för en 
+        betydande andel av returkostnaderna.<br> 
+        Varför detta sker bör rimligen undersökas i en separat analys, men kräver troligtvis också retur-feedback vilket inte finns i detta dataset.
+
+      </div>
+
+      <h2 class="section-heading">Order penetration</h2>
+      <p class="body-text">
+        Bland de bäst säljande produkterna är order penetration i de 
+        flesta fall över medianen. Ett par produkter återfinns även 
+        bland de bäst säljande i hela katalogen, vilket stärker bilden av att 
+        topprodukterna säljer brett och frekvent, inte bara i höga volymer per tillfälle.
+      </p>
+
+      <h2 class="section-heading">Produktsegmentering</h2>
+      <p class="body-text">
+        För att öka förståelsen och skapa förutsättningar att kunna rikta effektivare
+        och bättre produktrelaterade insatser så definierar vi tre segment. 
+        Dessa segment baseras på försäljning, returkvantitet, returvärde och order penetration.
+      </p>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Segment</th>
+              <th>Kriterier</th>
+              <th>Syfte</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="segment-badge segment-star">Stars</span></td>
+              <td>Hög försäljning, låg returkvantitet, hög penetration</td>
+              <td>Ankare för bundling- och cross-selling-strategier</td>
+            </tr>
+            <tr>
+              <td><span class="segment-badge segment-risky">Risky</span></td>
+              <td>Hög försäljning men returkvantitet ≥ 4%</td>
+              <td>Identifiera och reducera returorsaker</td>
+            </tr>
+            <tr>
+              <td><span class="segment-badge segment-niche">Niche</span></td>
+              <td>God försäljning, låg order penetration</td>
+              <td>Bredd ut räckvidden via cross-selling med Stars</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+
+      <h2 class="section-heading">Stars</h2>
+      <p class="body-text">
+        Stars-segmentet innehåller produkter som utmärker sig på samtliga nyckelmått. 
+        Returkvantitet ligger mellan 0,09% och 0,34%, vilket är långt under genomsnittet (5,07%). 
+        Order penetration är hög, med 75:e percentilen över 0,79%. Bland dessa hittar 
+        vi<strong>Assorted Colour Bird Ornament</strong>, <strong>Rabbit Night Light</strong> och 
+        <strong>Black Record Cover Frame</strong> som även finns med bland topprodukterna räknat på total försäljning.
+      </p>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>StockCode</th>
+              <th>Produkt</th>
+              <th>Orders</th>
+              <th>Total Sales</th>
+              <th>Return Rate (qty)</th>
+              <th>Return Rate (value)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>48194</td><td>Doormat Hearts</td><td>593</td><td>£22 114</td><td class="highlight-green">0.09%</td><td class="highlight-green">0.11%</td></tr>
+            <tr><td>22189</td><td>Cream Heart Card Holder</td><td>524</td><td>£23 436</td><td class="highlight-green">-</td><td class="highlight-green">-</td></tr>
+            <tr><td>48187</td><td>Doormat New England</td><td>600</td><td>£24 108</td><td class="highlight-green">-</td><td class="highlight-green">-</td></tr>
+            <tr><td>21623</td><td>Vintage Union Jack Memoboard</td><td>221</td><td>£22 980</td><td class="highlight-green">-</td><td class="highlight-green">-</td></tr>
+            <tr><td>21137</td><td>Black Record Cover Frame</td><td>375</td><td>£40 633</td><td class="highlight-green">-</td><td class="highlight-green">-</td></tr>
+            <tr><td>84879</td><td>Assorted Colour Bird Ornament</td><td>1 455</td><td>£58 928</td><td class="highlight-green">-</td><td class="highlight-green">-</td></tr>
+            <tr><td>23084</td><td>Rabbit Night Light</td><td>1 007</td><td>£66 870</td><td class="highlight-green">0.34%</td><td class="highlight-green">-</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 class="section-heading">Risky</h2>
+      <p class="body-text">
+        Risky-produkter bidrar signifikant till intäkterna men uppvisar samtidigt returmått
+        som urholkar försäljningen. Returkvantitet sträcker sig från 4,1% upp till 18,6%, 
+        med motsvarande returvärden mellan 3,9% och 19,1%. Tre av dessa finns även bland topprodukterna 
+        totalt sett: <strong>Regency Cakestand 3 Tier</strong>, <strong>White Hanging Heart T-Light Holder</strong> 
+        och <strong>Doormat Keep Calm and Come In</strong>.
+      </p>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>StockCode</th>
+              <th>Produkt</th>
+              <th>Orders</th>
+              <th>Total Sales</th>
+              <th>Return Rate (qty)</th>
+              <th>Return Rate (value)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>23284</td><td>Doormat Keep Calm and Come In</td><td>731</td><td>£38 134</td><td class="highlight-red">4.1%</td><td class="highlight-red">-</td></tr>
+            <tr><td>22699</td><td>Roses Regency Teacup and Saucer</td><td>1 066</td><td>£29 057</td><td class="highlight-red">-</td><td class="highlight-red">-</td></tr>
+            <tr><td>23201</td><td>Jumbo Bag Alphabet</td><td>906</td><td>£27 851</td><td class="highlight-red">-</td><td class="highlight-red">3.9%</td></tr>
+            <tr><td>23199</td><td>Jumbo Bag Apples</td><td>978</td><td>£30 451</td><td class="highlight-red">-</td><td class="highlight-red">-</td></tr>
+            <tr><td>22423</td><td>Regency Cakestand 3 Tier</td><td>1 989</td><td>£174 157</td><td class="highlight-red">8.3%</td><td class="highlight-red">5.6%</td></tr>
+            <tr><td>85123A</td><td>White Hanging Heart T-Light Holder</td><td>2 203</td><td>£104 463</td><td class="highlight-red">-</td><td class="highlight-red">-</td></tr>
+            <tr><td>48185</td><td>Doormat Fairy Cake</td><td>365</td><td>£23 873</td><td class="highlight-red">18.6%</td><td class="highlight-red">19.1%</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 class="section-heading">Niche</h2>
+      <p class="body-text">
+        Niche-segmentet innehåller produkter som säljer bra men har en låg order penetration. 
+        Segmentet är blandat sett till returkvantitet, där några saknar returer helt, medan 
+        andra uppvisar höga värden. De produkter som är mest intressanta är de som kombinerar 
+        låg penetration med avsaknad av returer, exempelvis <strong>Tea Time Tea Towels</strong> 
+        och <strong>Sombrero</strong>. Dessa indikerar god produkt/market-fit inom en smalare
+        kundgrupp, och kan vara lönsamma kandidater för cross-selling med Stars-produkter.
+      </p>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>StockCode</th>
+              <th>Produkt</th>
+              <th>Orders</th>
+              <th>Total Sales</th>
+              <th>Penetration</th>
+              <th>Return Rate (qty)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>22655</td><td>Vintage Red Kitchen Cabinet</td><td>38</td><td>£8 125</td><td>-</td><td>-</td></tr>
+            <tr><td>23134</td><td>Large Zinc Heart Wall Organiser</td><td>40</td><td>£6 431</td><td>-</td><td>-</td></tr>
+            <tr><td>22826</td><td>Love Seat Antique White Metal</td><td>41</td><td>£6 210</td><td>-</td><td>-</td></tr>
+            <tr><td>47556B</td><td>Tea Time Tea Towels</td><td>3</td><td>£6 045</td><td>Låg</td><td class="highlight-green">0%</td></tr>
+            <tr><td>22783</td><td>Set 3 Wicker Oval Baskets w Lids</td><td>34</td><td>£5 961</td><td>-</td><td>-</td></tr>
+            <tr><td>62018</td><td>Sombrero</td><td>61</td><td>£5 717</td><td>Låg</td><td class="highlight-green">0%</td></tr>
+            <tr><td>22827</td><td>Rustic Seventeen Drawer Sideboard</td><td>27</td><td>£5 415</td><td>-</td><td>-</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+
+      <h2 class="section-heading">Sammanfattning</h2>
+      <div class="body-text">
+        <div class="finding">Produktkatalogen kan beskrivas som bred och fragmenterad. Ingen enskild produkt sticker ut genom att tydligt dominera intäkterna.</div>
+        <div class="finding">Returfrekvens är generellt låg, men Regency Cakestand 3 Tier är ett tydligt undantag som kräver vidare utredning.</div>
+        <div class="finding">Stars-segmentet identifierar produkter lämpade som ankare i bundling- och cross-selling-strategier.</div>
+        <div class="finding">Risky-segmentet pekar ut var returreduktion har störst effekt på lönsamheten.</div>
+        <div class="finding">Niche-segmentet innehåller produkter med potential att bredda sin räckvidd utan ökad returrisk.</div>
+      </div>
+
+
+      <div class="code-block" onclick="this.classList.toggle('open')" style="margin-top:2rem;">
+        <div class="code-toggle">
+          <span class="code-toggle-label">SQL · Stars-segment</span>
+          <span class="code-toggle-icon">▾</span>
+        </div>
+        <div class="code-body"><div class="code-body-inner">
+<pre>
+SELECT 
+    stockcode, 
+    description, 
+    orders_with_product     AS in_orders,
+    order_penetration, 
+    ROUND(total_sales, 2)   AS total_sales,
+    return_rate_quantity,
+    return_rate_value 
+FROM productdim 
+WHERE is_product = 1 
+  AND total_sales > 20000 
+  AND return_rate_quantity < 0.01
+  AND return_rate_value    < 0.006  
+  AND stockcode NOT IN (
+      SELECT DISTINCT stockcode
+      FROM mart.retail_enriched
+      WHERE customerid IN (
+          SELECT DISTINCT customerid
+          FROM staging.top_anomalies
+          WHERE anomaly_type = 'anomaly_customer'
+      )
+  )
+ORDER BY return_rate_quantity ASC, in_orders DESC;
+</pre>
+        </div></div>
+      </div>
+
+      <div class="code-block" onclick="this.classList.toggle('open')">
+        <div class="code-toggle">
+          <span class="code-toggle-label">SQL · Risky-segment</span>
+          <span class="code-toggle-icon">▾</span>
+        </div>
+        <div class="code-body"><div class="code-body-inner">
+<pre>
+SELECT 
+    stockcode, 
+    description, 
+    orders_with_product     AS in_orders, 
+    ROUND(total_sales, 2)   AS total_sales,
+    return_rate_quantity,
+    return_rate_value           
+FROM productdim 
+WHERE is_product = 1 
+  AND total_sales > 20000
+  AND return_rate_quantity BETWEEN 0.04 AND 0.5
+  AND stockcode NOT IN (
+      SELECT DISTINCT stockcode
+      FROM mart.retail_enriched
+      WHERE customerid IN (
+          SELECT DISTINCT customerid
+          FROM staging.top_anomalies
+          WHERE anomaly_type = 'anomaly_customer'
+      )
+  )
+ORDER BY return_rate_quantity ASC, in_orders DESC;
+</pre>
+        </div></div>
+      </div>
+
+      <div class="code-block" onclick="this.classList.toggle('open')">
+        <div class="code-toggle">
+          <span class="code-toggle-label">SQL · Niche-segment</span>
+          <span class="code-toggle-icon">▾</span>
+        </div>
+        <div class="code-body"><div class="code-body-inner">
+<pre>
+SELECT 
+    stockcode, 
+    description, 
+    orders_with_product     AS in_orders,
+    order_penetration, 
+    ROUND(total_sales, 2)   AS total_sales,
+    return_rate_quantity,
+    return_rate_value 
+FROM productdim 
+WHERE is_product = 1 
+  AND total_sales > 5000 
+  AND order_penetration < 0.0031
+  AND (return_rate_quantity < 0.5 OR return_rate_quantity IS NULL)
+  AND stockcode NOT IN ('B', 'C2') 
+  AND stockcode NOT IN (
+      SELECT DISTINCT stockcode
+      FROM mart.retail_enriched
+      WHERE customerid IN (
+          SELECT DISTINCT customerid
+          FROM staging.top_anomalies
+          WHERE anomaly_type = 'anomaly_customer'
+      )
+  )
+ORDER BY total_sales DESC, order_penetration DESC;
+</pre>
+        </div></div>
+      </div>
+
+    </div>
 
   </div>
   </div>
