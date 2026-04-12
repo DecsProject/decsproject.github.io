@@ -297,7 +297,7 @@
 
   <div class="top-bar">
     <a class="site-name" href="../../index.html">DecsProject</a>
-    <a class="back-link" href="#" onclick="if(history.length > 1){ history.back(); } else { window.location='../index.html'; } return false;">← Back</a>
+    <a class="back-link" href="../index.html" onclick="history.back(); return false;">← Back</a>
   </div>
 
   <div class="col">
@@ -332,7 +332,7 @@
 
       <div class="meta-row">
         <div class="analysis-tags">
-          <span class="analysis-tag">Python</span
+          <span class="analysis-tag">Python</span>
           <span class="analysis-tag">DuckDB</span>
           <span class="analysis-tag">Pandas</span>
           <span class="analysis-tag">Plotly</span>
@@ -429,7 +429,27 @@
         klart bäst säljande i katalogen innebär detta att den också står för en 
         betydande andel av returkostnaderna.<br> 
         Varför detta sker bör rimligen undersökas i en separat analys, men kräver troligtvis också retur-feedback vilket inte finns i detta dataset.
+      </div>
 
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Produkt</th>
+              <th>Order penetration</th>
+              <th>Antal orders</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>White Hanging Heart T-Light Holder</td><td>10,6%</td><td>2 203</td></tr>
+            <tr><td>Regency Cakestand 3 Tier</td><td>9,6%</td><td>1 989</td></tr>
+            <tr><td>Jumbo Bag Red Retrospot</td><td>10,1%</td><td>2 092</td></tr>
+            <tr><td>Party Bunting</td><td>8,1%</td><td>1 686</td></tr>
+            <tr><td>Assorted Colour Bird Ornament</td><td>7,0%</td><td>1 455</td></tr>
+            <tr><td>Rabbit Night Light</td><td>4,9%</td><td>1 007</td></tr>
+            <tr><td>Black Record Cover Frame</td><td>1,8%</td><td>375</td></tr>
+          </tbody>
+        </table>
       </div>
 
       <h2 class="section-heading">Order penetration</h2>
@@ -480,9 +500,9 @@
       <h2 class="section-heading">Stars</h2>
       <p class="body-text">
         Stars-segmentet innehåller produkter som utmärker sig på samtliga nyckelmått. 
-        Returkvantitet ligger mellan 0,09% och 0,34%, vilket är långt under genomsnittet (5,07%). 
+        Returkvantitet ligger mellan 0,09% och 0,34%, vilket är långt under dess genomsnitt (5,07%). 
         Order penetration är hög, med 75:e percentilen över 0,79%. Bland dessa hittar 
-        vi<strong>Assorted Colour Bird Ornament</strong>, <strong>Rabbit Night Light</strong> och 
+        vi <strong>Assorted Colour Bird Ornament</strong>, <strong>Rabbit Night Light</strong> och 
         <strong>Black Record Cover Frame</strong> som även finns med bland topprodukterna räknat på total försäljning.
       </p>
 
