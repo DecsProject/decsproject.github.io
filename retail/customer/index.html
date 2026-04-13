@@ -4,7 +4,7 @@
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Analysis Title | DecsProject</title>
+  <title>Customer Segmentation | DecsProject</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
@@ -36,11 +36,11 @@
       animation:fadeIn 0.5s ease both;
       position:relative;z-index:2;
     }
-    .page-wrap {
-      max-width: 1600px;
-      margin: 0 auto;
-      width: 100%;
-      padding: 0 20px;
+    .page-wrap{
+      max-width:1600px;
+      margin:0 auto;
+      width:100%;
+      padding:0 20px;
     }
     .site-name{
       font-family:'Josefin Sans',sans-serif;
@@ -93,7 +93,7 @@
       font-weight:300;
       margin-bottom:1.75rem;
     }
-    
+
     .findings-block{
       background:rgba(255,255,255,0.6);
       border:0.5px solid rgba(0,0,0,0.1);
@@ -161,6 +161,7 @@
       font-weight:300;
       margin-bottom:1.25rem;
     }
+
     .chart-wrap{
       margin:1.75rem 0;
       border-radius:10px;
@@ -169,9 +170,9 @@
       background:#fff;
     }
     .chart-label{
-      font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.15em;
-      text-transform:uppercase;color:#aaa;
-      padding:0.75rem 1rem 0;
+      font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.12em;
+      text-transform:uppercase;color:#888;
+      padding:0.85rem 1rem 0.5rem;
     }
     .chart-embed{
       width:100%;
@@ -179,6 +180,7 @@
       border:none;
       display:block;
     }
+
     .table-wrap{
       margin:1.75rem 0;
       overflow-x:auto;
@@ -245,6 +247,39 @@
       white-space:pre;
     }
 
+    .callout{
+      background:rgba(255,255,255,0.55);
+      border-left:2px solid rgba(0,0,0,0.15);
+      border-radius:0 8px 8px 0;
+      padding:1rem 1.25rem;
+      margin:1.5rem 0;
+      font-size:13.5px;
+      color:#444;
+      line-height:1.8;
+      font-weight:300;
+    }
+    .callout strong{font-weight:500;color:#1a1a1a;}
+
+    .segment-badge{
+      display:inline-block;
+      font-family:'DM Mono',monospace;
+      font-size:9px;
+      letter-spacing:0.1em;
+      text-transform:uppercase;
+      padding:2px 7px;
+      border-radius:2px;
+      font-weight:500;
+    }
+    .seg-champion   { background:#e6f4ee; color:#0f6e56; }
+    .seg-bigspender { background:#fdecea; color:#993c1d; }
+    .seg-loyal      { background:#e6f1fb; color:#185fa5; }
+    .seg-atrisk     { background:#faeeda; color:#854f0b; }
+    .seg-new        { background:#f0eefd; color:#3c3489; }
+    .seg-opportunity{ background:#f1efe8; color:#5f5e5a; }
+    .seg-inactive   { background:#f1efe8; color:#888780; }
+
+    .nobr{white-space:nowrap;}
+
     @media(max-width:600px){
       body{padding:1.5rem 0 5rem;}
       .top-bar{padding:0 1.25rem;margin-bottom:2.5rem;}
@@ -262,25 +297,431 @@
   <div class="page-wrap">
 
   <div class="top-bar">
-    <a class="site-name" href="index.html">DecsProject</a>
-    <a class="back-link" href="index.html" onclick="history.back(); return false;">← Back</a>
+    <a class="site-name" href="../index.html">DecsProject</a>
+    <a class="back-link" href="#" onclick="history.back(); return false;">← Back</a>
   </div>
 
   <div class="col">
-    <!-- start -->
+
     <div class="analysis-header">
 
       <div class="analysis-eyebrow">
         <span class="status-dot status-live"></span>
-        Work in progress · 2026
+        Live · 2026
       </div>
 
-      <h1 class="analysis-title">Coming Soon</h1>
+      <h1 class="analysis-title">Customer Segmentation</h1>
+
       <p class="analysis-overview">
-        
+        Vilka kunder är mest värdefulla och vad skiljer dem åt? Vi jämför registrerade kunder mot gäster 
+        och genomför sedan en RFM-analys (recency, frequency, monetary) av de registrerade kunderna. 
+        Analysen segmenterar kunderna för att identifiera de viktigaste grupperna och vilka beteenden som driver intäkter.
+        Datan sträcker sig mellan <span class="nobr">2010-12-01</span> och <span class="nobr">2011-12-09</span>. 
+        Anomalikunder filtreras bort för att bättre spegla kärnverksamheten.
       </p>
+
+      <div class="findings-block">
+        <div class="findings-label">Insikter</div>
+        <div class="findings-list">
+          <div class="finding">32,8% av kundbasen (Champions + Big Spenders) driver 84,2% av intäkterna från registrerade kunder.</div>
+          <div class="finding">Fundamentalt skilda köpbeteenden mellan Champions och Big Spenders. Champions handlar frekvent med medelstora ordervärden, medan Big Spender handlar sällan men med höga ordervärden.</div>
+          <div class="finding">At Risk-segmentet visar tydliga tecken på minskad aktivitet, där median-dagar sedan senaste köp (99) överstiger genomsnittlig köpfrekvens (87 dagar).</div>
+        </div>
+      </div>
+
+      <div class="meta-row">
+        <div class="analysis-tags">
+          <span class="analysis-tag">Python</span>
+          <span class="analysis-tag">DuckDB</span>
+          <span class="analysis-tag">Pandas</span>
+          <span class="analysis-tag">Plotly</span>
+        </div>
+        <a class="github-link" href="https://github.com/DecsProject/retail-transaction-analysis/blob/main/Analysis/Notebooks/03_Customer_Segmentation.ipynb" target="_blank">GitHub →</a>
+      </div>
+
     </div>
-    <!-- end -->
+
+    <hr class="section-divider">
+
+    <div class="analysis-body">
+
+      <h2 class="section-heading">Registrerade kunder och gäster</h2>
+      <p class="body-text">
+        Av totalt <strong>4372</strong> registrerade kunder och <strong>3710</strong> 
+        unika gästorders uppgick de totala intäkterna under perioden till <span class="nobr">£10 255 973</span>. 
+        Registrerade kunder stod för <strong>84,7%</strong> av intäkterna, gäster för resterande 15,3%.
+      </p>
+
+      <div class="chart-wrap">
+        <div class="chart-label">Intäktsandel - registrerade vs gäster</div>
+        <iframe class="chart-embed" src="charts/cust_rev_pie.html"></iframe>
+      </div>
+
+      <p class="body-text">
+        Gästorders är i genomsnitt större, både sett till värde och produktbredd, än de 
+        registrerade kundernas orders, men de är betydligt mindre frekventa. Det är just 
+        frekvensen bland de registrerade kunderna som blir avgörande för totala intäkter. 
+        Att konvertera gäster till registrerade kunder bör därav ses som en möjlighet att 
+        öka intäkter på lång sikt, inte per order, utan genom fler återbesök.
+      </p>
+
+      <p class="body-text">
+        En svaghet med denna jämförelse är att vi antar att varje gästorder är en unik 
+        gäst, när det i själva verket skulle kunna vara återkommande kunder som inte registrerat sig. 
+        Trots det kvarstår möjligheten och potentialen i att konvertera dessa kunder.<br>
+        Returmåtten skiljer sig något mellan grupperna  och troligtvis mer kopplade till köpfrekvens 
+        än till faktiskt produktmissnöje. De registrerade kunderna returnerar i högre utsträckning, men 
+        av förhållandevis litet värde. Gäster returnerar däremot väldigt sällan, och i de fall retur sker så är det också av ett lågt värde.<br>
+        Varför dessa returer sker kan vi inte bekräfta på grund av avsaknaden av returanledningar.
+      </p>
+
+      <div class="chart-wrap">
+        <div class="chart-label">Korgvärden - registrerade vs gäster</div>
+        <iframe class="chart-embed" src="charts/cust_basket_value.html"></iframe>
+      </div>
+
+      <div class="chart-wrap">
+        <div class="chart-label">Unika varor per korg - registrerade vs gäster</div>
+        <iframe class="chart-embed" src="charts/cust_basket_items.html"></iframe>
+      </div>
+
+      <h2 class="section-heading">RFM-scoring</h2>
+      <p class="body-text">
+        Registrerade kunder utgör 84,7% av totala intäkter, vilket motiverar en 
+        närmare titt på hur de skiljer sig åt inom gruppen. Med en kombination 
+        av tre beteendemått som beskriver när en kund senast handlade, hur ofta den 
+        handlar, och hur mycket den handlat för, kan vi segmentera gruppen efter beteende
+        istället för demografi.
+      </p>
+
+      <p class="body-text">
+        Givet distributionen i respektive mått så bestäms brytpunkter för tre nivåer. 
+        I måttet <strong>days_since_last_purchase</strong> kan man urskilja två naturliga 
+        brytpunkter vid 39 och 89 dagar. I <strong>total_spend</strong> och <strong>total_orders</strong>, 
+        där datan är skev, används 33:e och 67:e percentilen som brytpunkter. Dessa nivåer är relativa 
+        till kundbasen, där ”High” innebär att kunden ligger i den övre tredjedelen, och inte att det är ett absolut högt värde.
+      </p>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Mått</th>
+              <th>Low</th>
+              <th>Mid</th>
+              <th>High</th>
+              <th>Poäng</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Days since last purchase</td>
+              <td>0–39 dagar</td>
+              <td>40–89 dagar</td>
+              <td>90+ dagar</td>
+              <td>3 / 2 / 1</td>
+            </tr>
+            <tr>
+              <td>Total spend</td>
+              <td>&lt; £384</td>
+              <td>£384–£1 212</td>
+              <td>&gt; £1 212</td>
+              <td>1 / 2 / 3</td>
+            </tr>
+            <tr>
+              <td>Total orders</td>
+              <td>1 order</td>
+              <td>2–4 orders</td>
+              <td>5+ orders</td>
+              <td>1 / 2 / 3</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="code-block" onclick="this.classList.toggle('open')">
+        <div class="code-toggle">
+          <span class="code-toggle-label">DuckDB - RFM-scoring</span>
+          <span class="code-toggle-icon">▾</span>
+        </div>
+        <div class="code-body"><div class="code-body-inner">
+<pre>
+SELECT
+    customerid,
+    total_spend,
+    total_orders,
+    days_since_last_purchase,
+
+    CASE 
+        WHEN total_spend >= 1212 THEN 3
+        WHEN total_spend >= 384  THEN 2
+        ELSE 1 
+    END AS monetary_score,
+    
+    CASE
+        WHEN total_orders >= 5 THEN 3
+        WHEN total_orders >= 2 THEN 2
+        ELSE 1 
+    END AS frequency_score,
+
+    CASE
+        WHEN days_since_last_purchase <= 39 THEN 3 
+        WHEN days_since_last_purchase <= 89 THEN 2
+        ELSE 1
+    END AS recency_score
+
+FROM customerdim
+WHERE customerid NOT IN (
+    SELECT DISTINCT customerid 
+    FROM staging.top_anomalies 
+    WHERE anomaly_type = 'anomaly_customer'
+)
+</pre>
+        </div></div>
+      </div>
+
+      <h2 class="section-heading">Segmentdefinitioner</h2>
+      <p class="body-text">
+        Kunderna delas därefter upp i sju segment baserat på de ”RFM”-poäng de fått. 
+        I de fall där ”Big Spender” och ”Loyal” överlappar så hamnar kunder i ”Big Spender”, 
+        främst på grund av att dessa kunder motiverar direkta och kortsiktigare 
+        insatser, medan ”Loyal” per definition grundar sig i långsiktigt relationsbyggande.
+      </p>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Segment</th>
+              <th>R</th>
+              <th>F</th>
+              <th>M</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="segment-badge seg-champion">Champion</span></td>
+              <td>3</td><td>3</td><td>3</td>
+            </tr>
+            <tr>
+              <td><span class="segment-badge seg-bigspender">Big Spender</span></td>
+              <td>1–3</td><td>1–3</td><td>3</td>
+            </tr>
+            <tr>
+              <td><span class="segment-badge seg-loyal">Loyal</span></td>
+              <td>2–3</td><td>3</td><td>1–3</td>
+            </tr>
+            <tr>
+              <td><span class="segment-badge seg-atrisk">At Risk</span></td>
+              <td>1–2</td><td>1–3</td><td>2–3</td>
+            </tr>
+            <tr>
+              <td><span class="segment-badge seg-new">New</span></td>
+              <td>3</td><td>1</td><td>1–3</td>
+            </tr>
+            <tr>
+              <td><span class="segment-badge seg-opportunity">Opportunity</span></td>
+              <td>2</td><td>2</td><td>1–3</td>
+            </tr>
+            <tr>
+              <td><span class="segment-badge seg-inactive">Inactive / Övrigt</span></td>
+              <td colspan="3">Övriga kombinationer</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="code-block" onclick="this.classList.toggle('open')">
+        <div class="code-toggle">
+          <span class="code-toggle-label">DuckDB - Segmentlogik</span>
+          <span class="code-toggle-icon">▾</span>
+        </div>
+        <div class="code-body"><div class="code-body-inner">
+<pre>
+WITH customer_scoring AS (
+    SELECT *,
+        CASE 
+            WHEN total_spend >= 1212 THEN 3
+            WHEN total_spend >= 384  THEN 2
+            ELSE 1 
+        END AS m_score,
+        CASE
+            WHEN total_orders >= 5 THEN 3
+            WHEN total_orders >= 2 THEN 2
+            ELSE 1 
+        END AS f_score,
+        CASE
+            WHEN days_since_last_purchase <= 39 THEN 3 
+            WHEN days_since_last_purchase <= 89 THEN 2
+            ELSE 1
+        END AS r_score
+    FROM customerdim
+    WHERE customerid NOT IN (
+        SELECT DISTINCT customerid 
+        FROM staging.top_anomalies 
+        WHERE anomaly_type = 'anomaly_customer'
+    )
+)
+SELECT *,
+    CASE
+        WHEN r_score = 3  AND f_score = 3  AND m_score = 3  THEN 'champion'
+        WHEN r_score >= 1 AND f_score >= 1 AND m_score = 3  THEN 'big_spender'
+        WHEN r_score >= 2 AND f_score = 3  AND m_score >= 1 THEN 'loyal'
+        WHEN r_score <= 2 AND f_score >= 1 AND m_score >= 2 THEN 'at_risk'
+        WHEN r_score = 3  AND f_score = 1  AND m_score >= 1 THEN 'new'
+        WHEN r_score >= 2 AND f_score = 2  AND m_score >= 1 THEN 'opportunity'
+        ELSE 'inactive_other'
+    END AS segment
+FROM customer_scoring
+</pre>
+        </div></div>
+      </div>
+
+      <h2 class="section-heading">Segmentöversikt</h2>
+      <p class="body-text">
+        Intäkterna är tydligt koncentrerade till en liten del av kundbasen. 
+        <strong>Champions</strong> (17,9% av kunderna) står för 65,35% av omsättningen. 
+        Tillsammans med <strong>Big Spenders</strong> (14,9%) genererar de 84,2% av intäkterna 
+        från registrerade kunder. 
+      </p>
+
+      <p class="body-text">
+        Denna koncentration erbjuder möjligheter för riktade insatser, 
+        men utgör också en risk. Med 65% av intäkterna koncentrerade till 
+        17,9% av kundbasen innebär churn bland Champions en oproportionerligt 
+        stor intäktspåverkan, vilket motiverar ett aktivt retention-arbete för detta segment.
+      </p>
+
+      <div class="chart-wrap">
+        <div class="chart-label">Intäktsandel vs kundandel per segment</div>
+        <iframe class="chart-embed" src="charts/cust_rev_v_pop.html"></iframe>
+      </div>
+
+      <h2 class="section-heading">Köpbeteenden per segment</h2>
+      <p class="body-text">
+        Beteenden som driver intäkter skiljer sig åt mellan segmenten. 
+        Exempelvis kännetecknas <strong>Champions</strong> av hög köpfrekvens 
+        (avg 27 dagar mellan orders) och medelstora ordervärden (median korgvärde £431). 
+        <strong>Big Spenders</strong> handlar däremot betydligt mer sällan (avg 65 dagar)
+        men till mycket högre ordervärden (median korgvärde £609).
+      </p>
+
+      <div class="chart-wrap">
+        <div class="chart-label">Genomsnittligt antal dagar mellan orders per segment</div>
+        <iframe class="chart-embed" src="charts/cust_days_between_orders.html"></iframe>
+      </div>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Segment</th>
+              <th>Median korgvärde</th>
+              <th>Avg dagar mellan orders</th>
+              <th>Median dagar sedan köp</th>
+              <th>Return rate (order)</th>
+              <th>Return rate (value)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="segment-badge seg-champion">Champion</span></td>
+              <td>£431</td><td>27</td><td>7</td><td>20%</td><td>2.7%</td>
+            </tr>
+            <tr>
+              <td><span class="segment-badge seg-bigspender">Big Spender</span></td>
+              <td>£609</td><td>65</td><td>53</td><td>22.3%</td><td>3.74%</td>
+            </tr>
+            <tr>
+              <td><span class="segment-badge seg-loyal">Loyal</span></td>
+              <td>£181</td><td>56</td><td>18</td><td>12.2%</td><td>2.48%</td>
+            </tr>
+            <tr>
+              <td><span class="segment-badge seg-atrisk">At Risk</span></td>
+              <td>£360</td><td>87</td><td>99</td><td>18%</td><td>2.32%</td>
+            </tr>
+            <tr>
+              <td><span class="segment-badge seg-new">New</span></td>
+              <td>£329</td><td>-</td><td>22</td><td>10.4%</td><td>1.15%</td>
+            </tr>
+            <tr>
+              <td><span class="segment-badge seg-opportunity">Opportunity</span></td>
+              <td>£252</td><td>100</td><td>19</td><td>12.5%</td><td>1.75%</td>
+            </tr>
+            <tr>
+              <td><span class="segment-badge seg-inactive">Inactive / Övrigt</span></td>
+              <td>£207</td><td>71</td><td>185</td><td>15%</td><td>3.63%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="body-text">
+        Genom att titta på genomsnittlig tid mellan köp kan vi få insikt om ett segment är 
+        på väg att falla bort, eller komma tillbaka. Måttet kan även sättas i relation till 
+        medianvärdet för tid sedan senaste köp, vilket ger oss en indikation på om segmentet 
+        fortfarande kan klassas som aktivt. Big spenders median på 53 dagar sedan senaste köp 
+        ligger inom ramen för segmentets historiska köpfrekvens (65 dagar), vilket indikerar 
+        att kunder inom segmentet till stor del är aktiva. 
+      </p>
+
+      <div class="callout">
+        <strong>At Risk</strong> visar tydliga tecken på minskad aktivitet. 
+        Median dagar sedan senaste köp (99) har passerat deras genomsnittliga köpfrekvens 
+        (87 dagar), vilket indikerar att kunderna i stor utsträckning riskerar bli inaktiva.
+        Men de klassas ännu inte som helt förlorade och skulle kunna ses som mål för riktade retention-insatser. 
+      </div>
+
+      <p class="body-text">
+       <strong>Loyal</strong> fångar en liten grupp frekvent återkommande kunder som inte 
+        riktigt når top-segmenten på grund av relativt låga ordervärden (median £181). 
+        Givet deras tydligt aktiva köpbeteende kan vi anta att dessa kunder svarar bra på 
+        relationsbyggande åtgärder. 
+        Möjligheterna här ligger i att över tid successivt öka kundgruppens ordervärden.
+      </p>
+
+      <p class="body-text">
+        <strong>New</strong> är kunder med endast en order. De sticker ut med låga returmått 
+        (returfrekvens 10,4%, returvärde 1,15%) vilket kan tolkas som att förväntningarna möts 
+        väl vid det första köpet. Detta är ett positivt tecken för konvertering mot ett andra köp. 
+        <strong>Opportunity</strong>-segmentet representerar kunder som fortfarande är aktiva men 
+        som inte etablerat ett tydligt köpmönster. Med rätt incitament bör denna grupp kunna röra 
+        sig mot antingen Loyal eller Big Spender-segmentet.
+
+      </p>
+
+      <h2 class="section-heading">Rekommendationer</h2>
+      <p class="body-text">
+        Segmenteringen av de registrerade kunderna gav insikt i hur köpbeteende skiljer 
+        sig åt inom denna grupp. Den visade också att 32,8% av kundbasen driver 84,2% av 
+        intäkterna, vilket tydliggör att riktade insatser per segment är mer effektiva än 
+        breda och generella kampanjer.
+      </p>
+
+      <div class="findings-block">
+        <div class="findings-label">Insatser per segment</div>
+        <div class="findings-list">
+          <div class="finding">VIP-program riktat mot Champions och Big Spenders - Tier-lösning med både spend och frekvens som mått för att pusha Champions på spend och Big Spenders på frekvens.</div>
+          <div class="finding">Alert-trigger när en kund rör sig mot At Risk, samt prioritering av befintliga At Risk-kunder med historiskt högt värde i retention-kampanjer.</div>
+          <div class="finding">Frekvensbaserade belöningar som matchar Loyals köpbeteende och uppmuntrar till högre ordervärden.</div>
+          <div class="finding">Onboarding-program för att konvertera gäster till registrerade användare - Tidsbegränsade förmåner som fri frakt och rabatt på ytterligare köp sänker tröskeln för ett andra köp.</div>
+          <div class="finding">Nudge för Opportunity: Rabatt på 3:e köpet eller fri frakt under begränsad period. Individuell sub-segmentering möjliggör mer precisa insatser, där hög recency + låg spend motiverar spend-fokuserade erbjudanden, och hög recency + låg frekvens motiverar incitament för återbesök.</div>
+        </div>
+      </div>
+
+      <p class="body-text" style="margin-top:1rem;opacity:0.6;font-size:13px;">
+        Notering: avg_days_between_orders för Inactive/Övrigt bör tolkas med försiktighet då
+        majoriteten av segmentet saknar tillräcklig köphistorik för ett meningsfullt mått.
+      </p>
+      <p class="body-text" style="margin-top:1rem;opacity:0.6;font-size:13px;">
+        Begränsning: Analysen baseras på ett ögonblicksvärde och fångar inte 
+        rörelseriktning på individnivå. Med längre tidsserie eller uppföljande 
+        mätpunkter skulle det gå att avgöra hur kunder rör sig över segment, 
+        eller om kunder rör sig mot högre eller lägre aktivitet över tid, 
+        vilket skulle öka precisionen i exempelvis retention-triggers.
+      </p>
+
+    </div>
 
   </div>
   </div>
